@@ -1,3 +1,4 @@
+#if UNI_TASK
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,3 +74,4 @@ namespace Appwrite.Services
 
     }
 }
+#endif

@@ -6,7 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+#if UNI_TASK
 using Cysharp.Threading.Tasks;
+#endif
 using UnityEngine;
 using UnityEngine.Networking;
 using Appwrite.Converters;
@@ -90,7 +92,7 @@ namespace Appwrite
             _endpoint = endpoint;
             return this;
         }
-
+#if UNI_TASK
         /// <summary>
         /// Sends a "ping" request to Appwrite to verify connectivity.
         /// </summary>
@@ -107,7 +109,7 @@ namespace Appwrite
             return await Call<string>("GET", "/ping", headers, parameters, 
                 response => (response.TryGetValue("result", out var result) ? result?.ToString() : null) ?? string.Empty);
         }
-
+#endif
         /// <summary>
         /// Set realtime endpoint for WebSocket connections
         /// </summary>
@@ -381,7 +383,7 @@ namespace Appwrite
 
             return request;
         }
-
+#if UNI_TASK
         public async UniTask<string> Redirect(
             string method,
             string path,
@@ -719,6 +721,8 @@ namespace Appwrite
             
             return converter(nonNullableResult);
         }
+#endif
+
     }
 
     // Custom certificate handler for self-signed certificates
