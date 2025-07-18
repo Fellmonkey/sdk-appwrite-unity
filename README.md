@@ -82,7 +82,7 @@ You can also install UniTask and other required dependencies automatically via *
 ```csharp
     [SerializeField] private AppwriteConfig config;
 
-    private async UniTask ExampleWithManager()
+    private async UniTask ExampleWithDirectClient()
     {
         // Create and configure client
         var client = new Client()
