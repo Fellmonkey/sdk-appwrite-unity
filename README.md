@@ -22,6 +22,7 @@ Use this SDK to quickly connect your Unity project to Appwrite and interact with
 https://github.com/fellmonkey/sdk-appwrite-unity.git?path=Assets
 ```
 4. Click **Add**
+5. In Unity, open the **Appwrite → Setup Assistant** menu and install the required dependencies
 
 ### Manual Installation
 
