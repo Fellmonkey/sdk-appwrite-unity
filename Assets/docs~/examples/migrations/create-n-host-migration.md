@@ -1,0 +1,76 @@
+# CreateNHostMigration
+
+## Example
+
+```csharp
+using Appwrite;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+
+public class CreateNHostMigrationExample : MonoBehaviour
+{
+    private Client client;
+    
+    async void Start()
+    {
+        client = gameObject.AddComponent<Client>();
+        client.SetEndpoint("https://cloud.appwrite.io/v1")
+              .SetXAppwriteProject("YOUR_PROJECT");
+              .SetXAppwriteKey("YOUR_KEY");
+              .SetXAppwriteJWT("YOUR_JWT");
+              .SetXAppwriteLocale("YOUR_LOCALE");
+              .SetXAppwriteMode("YOUR_MODE");
+        
+        await ExampleCreateNHostMigration();
+    }
+    
+    async UniTask ExampleCreateNHostMigration()
+    {
+        try
+        {
+            // Setup parameters
+            var resources = new List<string>(); // List of resources to migrate
+            var subdomain = "<SUBDOMAIN>"; // Source&#039;s Subdomain
+            var region = "<REGION>"; // Source&#039;s Region
+            var adminSecret = "<ADMIN_SECRET>"; // Source&#039;s Admin Secret
+            var database = "<DATABASE>"; // Source&#039;s Database Name
+            var username = "<USERNAME>"; // Source&#039;s Database Username
+            var password = "<PASSWORD>"; // Source&#039;s Database Password
+            
+            var result = await client.Migrations.CreateNHostMigrationAsync(
+                resources,
+                subdomain,
+                region,
+                adminSecret,
+                database,
+                username,
+                password
+            );
+            
+            Debug.Log("Success: " + result);
+        }
+        catch (AppwriteException ex)
+        {
+            Debug.LogError($"Error: {ex.Message} (Code: {ex.Code})");
+        }
+    }
+}
+```
+
+## Parameters
+
+- **resources** *array* - List of resources to migrate *(required)*
+- **subdomain** *string* - Source&#039;s Subdomain *(required)*
+- **region** *string* - Source&#039;s Region *(required)*
+- **adminSecret** *string* - Source&#039;s Admin Secret *(required)*
+- **database** *string* - Source&#039;s Database Name *(required)*
+- **username** *string* - Source&#039;s Database Username *(required)*
+- **password** *string* - Source&#039;s Database Password *(required)*
+- **port** *integer* - Source&#039;s Database Port
+
+## Response
+
+Returns `Migration` object.
+## More Info
+
+Migrate data from an NHost project to your Appwrite project. This endpoint allows you to migrate resources like authentication, databases, and other supported services from an NHost project. 
