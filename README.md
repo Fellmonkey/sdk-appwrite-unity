@@ -1,4 +1,4 @@
-# Unofficial Appwrite Unity SDK
+# Unofficial [Appwrite](https://github.com/appwrite/appwrite) Unity SDK
 
 ![Version](https://img.shields.io/badge/api%20version-1.7.4-blue.svg?style=flat-square)
 ![Unity](https://img.shields.io/badge/Unity-2021.3+-blue.svg)
@@ -35,20 +35,13 @@ https://github.com/fellmonkey/sdk-appwrite-unity.git?path=Assets
 
 This SDK requires the following Unity packages and libraries:
 
-- **UniTask**: For async/await support in Unity
-- **NativeWebSocket**: For WebSocket real-time subscriptions
+- [**UniTask**](https://github.com/Cysharp/UniTask): For async/await support in Unity
+- [**NativeWebSocket**](https://github.com/endel/NativeWebSocket): For WebSocket real-time subscriptions
 - **System.Text.Json**: For JSON serialization (provided as a DLL in the project)
 
 You can also install UniTask and other required dependencies automatically via **Appwrite → Setup Assistant** in Unity.
 
 ## Quick Start
-
-The most up-to-date usage examples for both client and server are available in the `Samples~` folder of your project, as well as in the documentation.
-
-- For typical scenarios (authentication, account management, real-time, file uploads, etc.), use the samples from `Samples~`.
-- For server-side and admin operations, refer to the documentation and provided examples.
-
-**It is recommended to start by reviewing the examples in the `Samples~` folder—they reflect the current implementation and best practices.**
 
 ### Example: Unity Integration - Using AppwriteManager
 
