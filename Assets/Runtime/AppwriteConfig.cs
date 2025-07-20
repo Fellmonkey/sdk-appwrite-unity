@@ -1,7 +1,36 @@
+using System;
 using UnityEngine;
 
 namespace Appwrite
 {
+    // Define the service enum with Flags attribute for multi-selection in the inspector
+    [Flags]
+    public enum AppwriteService
+    {
+        None = 0,
+        Account = 1 << 0,
+        Databases = 1 << 1,
+        Storage = 1 << 2,
+        Functions = 1 << 3,
+        Messaging = 1 << 4,
+        Sites = 1 << 5,
+        Locale = 1 << 6,
+        Avatars = 1 << 7,
+        Health = 1 << 8,
+        Migrations = 1 << 9,
+        Tokens = 1 << 10,
+        Teams = 1 << 11,
+        Users = 1 << 12,
+        [Tooltip("Selects all main services: Account, Databases, Storage, Functions, Messaging, Sites")]
+        Main = (1 << 6) - 1, // 0-5
+        [Tooltip("Selects all other services: Locale, Avatars, Health, Migrations, Tokens, Teams, Users")]
+        Others = (1 << 13) - 1 ^ (1 << 6) - 1, // 6-12
+
+        [Tooltip("Selects all available services.")]
+        All = ~0
+        
+    }
+
     /// <summary>
     /// ScriptableObject configuration for Appwrite client settings
     /// </summary>
@@ -21,9 +50,13 @@ namespace Appwrite
         [Header("Project Settings")]
         [Tooltip("Your Appwrite project ID")]
         [SerializeField] private string projectId = "";
+
+        [Header("Service Initialization")] 
+        [Tooltip("Select which Appwrite services to initialize.")]
+        [SerializeField] private AppwriteService servicesToInitialize = AppwriteService.All;
         
         [Header("Advanced Settings")]
-        [Tooltip("API key (optional)")]
+        [Tooltip("API key (optional). WARNING: Storing API keys in ScriptableObjects is a security risk. Do not expose this in public repositories. Consider loading from a secure location at runtime for production builds.")]
         [SerializeField] private string apiKey = "";
         
         [Tooltip("Automatically connect to Appwrite on start")]
@@ -34,8 +67,8 @@ namespace Appwrite
         public bool SelfSigned => selfSigned;
         public string ProjectId => projectId;
         public string ApiKey => apiKey;
-
         public bool AutoConnect => autoConnect;
+        public AppwriteService ServicesToInitialize => servicesToInitialize;
 
         /// <summary>
         /// Validate configuration settings
@@ -47,6 +80,9 @@ namespace Appwrite
             
             if (string.IsNullOrEmpty(projectId))
                 Debug.LogWarning("AppwriteConfig: Project ID is required");
+
+            if (!string.IsNullOrEmpty(apiKey))
+                Debug.LogWarning("AppwriteConfig: API Key is set. For security, avoid storing keys directly in assets for production builds.");
         }
         
         

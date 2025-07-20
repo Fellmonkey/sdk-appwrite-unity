@@ -10,8 +10,9 @@ namespace Appwrite.Utilities
     /// </summary>
     public static class AppwriteUtilities
     {
+        #if UNITY_EDITOR
         /// <summary>
-        /// Quick setup for Appwrite in Unity
+        /// Quick setup for Appwrite in Unity (Editor Only)
         /// </summary>
         public static async UniTask<AppwriteManager> QuickSetup()
         {
@@ -35,6 +36,7 @@ namespace Appwrite.Utilities
             var a =manager.Realtime;
             return manager;
         }
+        #endif
 
         /// <summary>
         /// Run async operation with Unity-safe error handling

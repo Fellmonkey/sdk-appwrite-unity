@@ -1,6 +1,6 @@
 {
   "name": "com.fellmonkey.appwrite-sdk",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "displayName": "Appwrite SDK",
   "description": "Unofficial Appwrite SDK for Unity, generated using the Appwrite SDK Generator. This package provides integration with Appwrite backend services for Unity projects.",
   "unity": "2021.3",
