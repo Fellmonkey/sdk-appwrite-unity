@@ -23,7 +23,7 @@ https://github.com/fellmonkey/sdk-appwrite-unity.git?path=Assets
 ```
 4. Click **Add**
 5. In Unity, open the **Appwrite → Setup Assistant** menu and install the required dependencies
-
+![](./.media/setup-assistant.png)
 ### Manual Installation
 
 1. Download the latest release from [GitHub](/releases) or zip
@@ -42,6 +42,11 @@ This SDK requires the following Unity packages and libraries:
 You can also install UniTask and other required dependencies automatically via **Appwrite → Setup Assistant** in Unity.
 
 ## Quick Start
+> **Before you begin**  
+> First, create an Appwrite configuration:  
+> — via the **QuickStart** window in the **Appwrite Setup Assistant**  
+> — or through the menu **Appwrite → Create Configuration**
+![](./.media/config.png)
 
 ### Example: Unity Integration - Using AppwriteManager
 
