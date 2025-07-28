@@ -16,10 +16,10 @@ public class UpdateStatusExample : MonoBehaviour
         client = gameObject.AddComponent<Client>();
         client.SetEndpoint("https://cloud.appwrite.io/v1")
               .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteKey("YOUR_KEY");
               .SetXAppwriteJWT("YOUR_JWT");
               .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteMode("YOUR_MODE");
+              .SetXAppwriteSession("YOUR_SESSION");
+              .SetXAppwriteDevKey("YOUR_DEVKEY");
         
         await ExampleUpdateStatus();
     }

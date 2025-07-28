@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.3.0
+
+* Switched to SDK generated for the client (Unity client SDK)
+* Previous versions were generated for the server client
+* Improved compatibility and usage for Unity client-side applications
+
 ## 0.1.0
 
 * Initial release of Appwrite Unity SDK

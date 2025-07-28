@@ -85,33 +85,6 @@ namespace Appwrite.Services
         }
 
         /// <para>
-        /// Delete the currently logged in user.
-        /// </para>
-        /// </summary>
-        public UniTask<object> Delete()
-        {
-            var apiPath = "/account";
-
-            var apiParameters = new Dictionary<string, object?>()
-            {
-            };
-
-            var apiHeaders = new Dictionary<string, string>()
-            {
-                { "content-type", "application/json" }
-            };
-
-
-
-            return _client.Call<object>(
-                method: "DELETE",
-                path: apiPath,
-                headers: apiHeaders,
-                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!);
-
-        }
-
-        /// <para>
         /// Update currently logged in user account email address. After changing user
         /// address, the user confirmation status will get reset. A new confirmation
         /// email is not sent automatically however you can use the send confirmation

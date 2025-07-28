@@ -133,14 +133,6 @@ namespace Appwrite
             return this;
         }
 
-        /// <summary>Your secret API key</summary>
-        public Client SetKey(string value) {
-            _config["key"] = value;
-            AddHeader("X-Appwrite-Key", value);
-
-            return this;
-        }
-
         /// <summary>Your secret JSON Web Token</summary>
         public Client SetJWT(string value) {
             _config["jWT"] = value;
@@ -156,25 +148,22 @@ namespace Appwrite
             return this;
         }
 
-        public Client SetMode(string value) {
-            _config["mode"] = value;
-            AddHeader("X-Appwrite-Mode", value);
+        /// <summary>The user session to authenticate with</summary>
+        public Client SetSession(string value) {
+            _config["session"] = value;
+            AddHeader("X-Appwrite-Session", value);
 
             return this;
         }
 
-        
-        /// <summary>
-        /// Set the current session for authenticated requests
-        /// </summary>
-        /// <param name="session">Session token</param>
-        /// <returns>Client instance for method chaining</returns>
-        public Client SetSession(string session)
-        {
-            _config["session"] = session;
-            AddHeader("X-Appwrite-Session", session);
+        /// <summary>Your secret dev API key</summary>
+        public Client SetDevKey(string value) {
+            _config["devKey"] = value;
+            AddHeader("X-Appwrite-Dev-Key", value);
+
             return this;
         }
+
 
         /// <summary>
         /// Initialize OAuth2 authentication flow
