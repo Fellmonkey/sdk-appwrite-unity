@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.4.0
+* Removed server SDK files
+
 ## 0.3.0
 
 * Switched to SDK generated for the client (Unity client SDK)

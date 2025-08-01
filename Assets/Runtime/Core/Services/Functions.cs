@@ -64,7 +64,7 @@ namespace Appwrite.Services
                 { "body", body },
                 { "async", xasync },
                 { "path", xpath },
-                { "method", method },
+                { "method", method?.Value },
                 { "headers", headers },
                 { "scheduledAt", scheduledAt }
             };

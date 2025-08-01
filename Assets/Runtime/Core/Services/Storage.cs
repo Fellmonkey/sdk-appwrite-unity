@@ -250,7 +250,7 @@ onProgress);
             {
                 { "width", width },
                 { "height", height },
-                { "gravity", gravity },
+                { "gravity", gravity?.Value },
                 { "quality", quality },
                 { "borderWidth", borderWidth },
                 { "borderColor", borderColor },
@@ -258,7 +258,7 @@ onProgress);
                 { "opacity", opacity },
                 { "rotation", rotation },
                 { "background", background },
-                { "output", output },
+                { "output", output?.Value },
                 { "token", token }
             };
 
