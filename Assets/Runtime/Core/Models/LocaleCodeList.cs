@@ -24,7 +24,7 @@ namespace Appwrite.Models
 
         public static LocaleCodeList From(Dictionary<string, object> map) => new LocaleCodeList(
             total: Convert.ToInt64(map["total"]),
-            localeCodes: map["localeCodes"] is JsonElement jsonArray2 ? jsonArray2.Deserialize<List<Dictionary<string, object>>>()!.Select(it => LocaleCode.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["localeCodes"]).Select(it => LocaleCode.From(map: it)).ToList()
+            localeCodes: ((IEnumerable<object>)map["localeCodes"]).Select(it => LocaleCode.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

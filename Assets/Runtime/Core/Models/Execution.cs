@@ -101,20 +101,20 @@ namespace Appwrite.Models
             id: map["$id"].ToString(),
             createdAt: map["$createdAt"].ToString(),
             updatedAt: map["$updatedAt"].ToString(),
-            permissions: map["$permissions"] is JsonElement jsonArrayProp4 ? jsonArrayProp4.Deserialize<List<string>>()! : (List<string>)map["$permissions"],
+            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
             functionId: map["functionId"].ToString(),
             trigger: map["trigger"].ToString(),
             status: map["status"].ToString(),
             requestMethod: map["requestMethod"].ToString(),
             requestPath: map["requestPath"].ToString(),
-            requestHeaders: map["requestHeaders"] is JsonElement jsonArray10 ? jsonArray10.Deserialize<List<Dictionary<string, object>>>()!.Select(it => Headers.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["requestHeaders"]).Select(it => Headers.From(map: it)).ToList(),
+            requestHeaders: ((IEnumerable<object>)map["requestHeaders"]).Select(it => Headers.From(map: (Dictionary<string, object>)it)).ToList(),
             responseStatusCode: Convert.ToInt64(map["responseStatusCode"]),
             responseBody: map["responseBody"].ToString(),
-            responseHeaders: map["responseHeaders"] is JsonElement jsonArray13 ? jsonArray13.Deserialize<List<Dictionary<string, object>>>()!.Select(it => Headers.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["responseHeaders"]).Select(it => Headers.From(map: it)).ToList(),
+            responseHeaders: ((IEnumerable<object>)map["responseHeaders"]).Select(it => Headers.From(map: (Dictionary<string, object>)it)).ToList(),
             logs: map["logs"].ToString(),
             errors: map["errors"].ToString(),
             duration: Convert.ToDouble(map["duration"]),
-            scheduledAt: map.TryGetValue("scheduledAt", out var scheduledAt) ? scheduledAt?.ToString() : null
+            scheduledAt: map["scheduledAt"]?.ToString()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

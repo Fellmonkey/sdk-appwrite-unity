@@ -184,7 +184,7 @@ namespace Appwrite.Models
             countryCode: map["countryCode"].ToString(),
             countryName: map["countryName"].ToString(),
             current: (bool)map["current"],
-            factors: map["factors"] is JsonElement jsonArrayProp27 ? jsonArrayProp27.Deserialize<List<string>>()! : (List<string>)map["factors"],
+            factors: ((IEnumerable<object>)map["factors"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
             secret: map["secret"].ToString(),
             mfaUpdatedAt: map["mfaUpdatedAt"].ToString()
         );

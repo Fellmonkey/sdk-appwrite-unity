@@ -24,7 +24,7 @@ namespace Appwrite.Models
 
         public static ExecutionList From(Dictionary<string, object> map) => new ExecutionList(
             total: Convert.ToInt64(map["total"]),
-            executions: map["executions"] is JsonElement jsonArray2 ? jsonArray2.Deserialize<List<Dictionary<string, object>>>()!.Select(it => Execution.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["executions"]).Select(it => Execution.From(map: it)).ToList()
+            executions: ((IEnumerable<object>)map["executions"]).Select(it => Execution.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

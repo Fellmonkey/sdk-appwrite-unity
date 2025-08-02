@@ -58,7 +58,7 @@ namespace Appwrite.Models
             databaseId: map["$databaseId"].ToString(),
             createdAt: map["$createdAt"].ToString(),
             updatedAt: map["$updatedAt"].ToString(),
-            permissions: map["$permissions"] is JsonElement jsonArrayProp7 ? jsonArrayProp7.Deserialize<List<string>>()! : (List<string>)map["$permissions"],
+            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
             data: map
         );
 

@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Cysharp.Threading.Tasks;
 using Appwrite.Models;
 using Appwrite.Enums;
@@ -90,18 +89,18 @@ namespace Appwrite.Services
             static Models.File Convert(Dictionary<string, object> it) =>
                 Models.File.From(map: it);
 
-string? idParamName = "fileId";
+            string? idParamName = "fileId";
 
-        var paramName = "file";
+            var paramName = "file";
 
-return _client.ChunkedUpload(
-apiPath,
-apiHeaders,
-apiParameters,
-    Convert,
-paramName,
-idParamName,
-onProgress);
+            return _client.ChunkedUpload(
+                apiPath,
+                apiHeaders,
+                apiParameters,
+                Convert,
+                paramName,
+                idParamName,
+                onProgress);
         }
 
         /// <para>

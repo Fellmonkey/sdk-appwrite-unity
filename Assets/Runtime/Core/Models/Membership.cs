@@ -90,7 +90,7 @@ namespace Appwrite.Models
             joined: map["joined"].ToString(),
             confirm: (bool)map["confirm"],
             mfa: (bool)map["mfa"],
-            roles: map["roles"] is JsonElement jsonArrayProp13 ? jsonArrayProp13.Deserialize<List<string>>()! : (List<string>)map["roles"]
+            roles: ((IEnumerable<object>)map["roles"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

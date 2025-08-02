@@ -24,7 +24,7 @@ namespace Appwrite.Models
 
         public static DocumentList From(Dictionary<string, object> map) => new DocumentList(
             total: Convert.ToInt64(map["total"]),
-            documents: map["documents"] is JsonElement jsonArray2 ? jsonArray2.Deserialize<List<Dictionary<string, object>>>()!.Select(it => Document.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["documents"]).Select(it => Document.From(map: it)).ToList()
+            documents: ((IEnumerable<object>)map["documents"]).Select(it => Document.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

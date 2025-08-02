@@ -24,7 +24,7 @@ namespace Appwrite.Models
 
         public static CountryList From(Dictionary<string, object> map) => new CountryList(
             total: Convert.ToInt64(map["total"]),
-            countries: map["countries"] is JsonElement jsonArray2 ? jsonArray2.Deserialize<List<Dictionary<string, object>>>()!.Select(it => Country.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["countries"]).Select(it => Country.From(map: it)).ToList()
+            countries: ((IEnumerable<object>)map["countries"]).Select(it => Country.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

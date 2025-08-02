@@ -24,7 +24,7 @@ namespace Appwrite.Models
 
         public static SessionList From(Dictionary<string, object> map) => new SessionList(
             total: Convert.ToInt64(map["total"]),
-            sessions: map["sessions"] is JsonElement jsonArray2 ? jsonArray2.Deserialize<List<Dictionary<string, object>>>()!.Select(it => Session.From(map: it)).ToList() : ((IEnumerable<Dictionary<string, object>>)map["sessions"]).Select(it => Session.From(map: it)).ToList()
+            sessions: ((IEnumerable<object>)map["sessions"]).Select(it => Session.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

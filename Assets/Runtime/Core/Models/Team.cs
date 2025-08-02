@@ -48,7 +48,7 @@ namespace Appwrite.Models
             updatedAt: map["$updatedAt"].ToString(),
             name: map["name"].ToString(),
             total: Convert.ToInt64(map["total"]),
-            prefs: Preferences.From(map: map["prefs"] is JsonElement jsonObj6 ? jsonObj6.Deserialize<Dictionary<string, object>>()! : (Dictionary<string, object>)map["prefs"])
+            prefs: Preferences.From(map: (Dictionary<string, object>)map["prefs"])
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

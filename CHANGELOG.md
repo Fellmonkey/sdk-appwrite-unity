@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.5.0
+* Added persistent storage for session and JWT in Client
+* Implemented persistent cookie storage in CookieContainer with support for max-age, SameSite, and improved domain/path matching
+* Refactored model list parsing to handle IEnumerable<object> for better deserialization compatibility
+* Updated AppwriteService enum for new service structure and set default realtime endpoint
+* Fixed minor formatting and consistency issues across enums and models
+
 ## 0.4.0
 * Removed server SDK files
 

@@ -63,7 +63,7 @@ namespace Appwrite.Models
             updatedAt: map["$updatedAt"].ToString(),
             name: map["name"].ToString(),
             userId: map["userId"].ToString(),
-            providerId: map.TryGetValue("providerId", out var providerId) ? providerId?.ToString() : null,
+            providerId: map["providerId"]?.ToString(),
             providerType: map["providerType"].ToString(),
             identifier: map["identifier"].ToString(),
             expired: (bool)map["expired"]
