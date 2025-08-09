@@ -10,6 +10,9 @@ Appwrite is an open-source backend-as-a-service that abstracts and simplifies co
 
 Use this SDK to quickly connect your Unity project to Appwrite and interact with all backend APIs and tools. For full API documentation and tutorials, visit: https://appwrite.io/docs
 
+## 🕹️ Playground Demo
+
+Explore the capabilities of this SDK in action with the [Playground Demo](https://fellmonkey.github.io/playground-appwrite-unity/). [GitHub](https://github.com/Fellmonkey/playground-appwrite-unity)
 
 ## Installation
 
