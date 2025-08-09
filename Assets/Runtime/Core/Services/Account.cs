@@ -5,6 +5,9 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using Appwrite.Models;
 using Appwrite.Enums;
+using Appwrite.Extensions;
+using System.Web;
+using UnityEngine;
 
 namespace Appwrite.Services
 {
@@ -997,7 +1000,8 @@ namespace Appwrite.Services
         /// 
         /// </para>
         /// </summary>
-        public UniTask<String> CreateOAuth2Session(Appwrite.Enums.OAuthProvider provider, string? success = null, string? failure = null, List<string>? scopes = null)
+#if UNITY_EDITOR || UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL
+        public async UniTask CreateOAuth2Session(Appwrite.Enums.OAuthProvider provider, string? success = null, string? failure = null, List<string>? scopes = null)
         {
             var apiPath = "/account/sessions/oauth2/{provider}"
                 .Replace("{provider}", provider.Value);
@@ -1015,14 +1019,46 @@ namespace Appwrite.Services
 
 
 
-            return _client.Redirect(
-                method: "GET",
-                path: apiPath,
-                headers: apiHeaders,
-                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!);
+            var project = _client.Config.GetValueOrDefault("project");
+            apiParameters["project"] = project;
+
+            var queryString = apiParameters.ToQueryString();
+            var authUrl = $"{_client.Endpoint}{apiPath}?{queryString}";
+
+            var callbackUri = await WebAuthComponent.Authenticate(authUrl);
+            
+            var query = HttpUtility.ParseQueryString(callbackUri.Query);
+            var secret = query.Get("secret");
+            var key = query.Get("key");
+            var callbackDomain = query.Get("domain"); // Get domain from callback
+
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(key))
+            {
+                var error = query.Get("error") ?? "Unknown error";
+                throw new AppwriteException($"Failed to get authentication credentials from callback. Error: {error}");
+            }
+
+            // Use domain from callback if available, otherwise fallback to endpoint host
+            var domain = !string.IsNullOrEmpty(callbackDomain) ? callbackDomain : new Uri(_client.Endpoint).Host;
+
+            // Create a Set-Cookie header format and parse it
+            // This ensures consistent cookie processing with server responses
+            var setCookieHeader = $"{key}={secret}; Path=/; Domain={domain}; Secure; HttpOnly; Max-Age={30 * 24 * 60 * 60}";
+            Debug.Log($"Setting cookie: {setCookieHeader} for domain: {domain}");
+            _client.CookieContainer.ParseSetCookieHeader(setCookieHeader, domain.StartsWith(".") ? domain.Substring(1) : domain);
+
+#if UNITY_EDITOR
+            Debug.LogWarning("[Appwrite] OAuth authorization in Editor: you can open and authorize, but cookies cannot be obtained. The session will not be set.");
+#endif
 
         }
-
+#else
+        public UniTask CreateOAuth2Session(Appwrite.Enums.OAuthProvider provider, string? success = null, string? failure = null, List<string>? scopes = null)
+        {
+            Debug.LogWarning("[Appwrite] OAuth2 authorization is not supported on this platform. Available only in Editor, WebGL, iOS or Android.");
+            return UniTask.CompletedTask;
+        }
+#endif
         /// <para>
         /// Use this endpoint to create a session from token. Provide the **userId**
         /// and **secret** parameters from the successful response of authentication
@@ -1428,7 +1464,8 @@ namespace Appwrite.Services
         /// limits](https://appwrite.io/docs/authentication-security#limits).
         /// </para>
         /// </summary>
-        public UniTask<String> CreateOAuth2Token(Appwrite.Enums.OAuthProvider provider, string? success = null, string? failure = null, List<string>? scopes = null)
+#if UNITY_EDITOR || UNITY_IOS || UNITY_ANDROID || UNITY_WEBGL
+        public async UniTask CreateOAuth2Token(Appwrite.Enums.OAuthProvider provider, string? success = null, string? failure = null, List<string>? scopes = null)
         {
             var apiPath = "/account/tokens/oauth2/{provider}"
                 .Replace("{provider}", provider.Value);
@@ -1446,14 +1483,46 @@ namespace Appwrite.Services
 
 
 
-            return _client.Redirect(
-                method: "GET",
-                path: apiPath,
-                headers: apiHeaders,
-                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!);
+            var project = _client.Config.GetValueOrDefault("project");
+            apiParameters["project"] = project;
+
+            var queryString = apiParameters.ToQueryString();
+            var authUrl = $"{_client.Endpoint}{apiPath}?{queryString}";
+
+            var callbackUri = await WebAuthComponent.Authenticate(authUrl);
+            
+            var query = HttpUtility.ParseQueryString(callbackUri.Query);
+            var secret = query.Get("secret");
+            var key = query.Get("key");
+            var callbackDomain = query.Get("domain"); // Get domain from callback
+
+            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(key))
+            {
+                var error = query.Get("error") ?? "Unknown error";
+                throw new AppwriteException($"Failed to get authentication credentials from callback. Error: {error}");
+            }
+
+            // Use domain from callback if available, otherwise fallback to endpoint host
+            var domain = !string.IsNullOrEmpty(callbackDomain) ? callbackDomain : new Uri(_client.Endpoint).Host;
+
+            // Create a Set-Cookie header format and parse it
+            // This ensures consistent cookie processing with server responses
+            var setCookieHeader = $"{key}={secret}; Path=/; Domain={domain}; Secure; HttpOnly; Max-Age={30 * 24 * 60 * 60}";
+            Debug.Log($"Setting cookie: {setCookieHeader} for domain: {domain}");
+            _client.CookieContainer.ParseSetCookieHeader(setCookieHeader, domain.StartsWith(".") ? domain.Substring(1) : domain);
+
+#if UNITY_EDITOR
+            Debug.LogWarning("[Appwrite] OAuth authorization in Editor: you can open and authorize, but cookies cannot be obtained. The session will not be set.");
+#endif
 
         }
-
+#else
+        public UniTask CreateOAuth2Token(Appwrite.Enums.OAuthProvider provider, string? success = null, string? failure = null, List<string>? scopes = null)
+        {
+            Debug.LogWarning("[Appwrite] OAuth2 authorization is not supported on this platform. Available only in Editor, WebGL, iOS or Android.");
+            return UniTask.CompletedTask;
+        }
+#endif
         /// <para>
         /// Sends the user an SMS with a secret key for creating a session. If the
         /// provided user ID has not be registered, a new user will be created. Use the

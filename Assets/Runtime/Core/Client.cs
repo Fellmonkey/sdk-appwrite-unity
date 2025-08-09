@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -24,6 +23,7 @@ namespace Appwrite
     
         public string Endpoint => _endpoint;
         public Dictionary<string, string> Config => _config;
+        public CookieContainer CookieContainer => _cookieContainer;
 
         private readonly Dictionary<string, string> _headers;
         private readonly Dictionary<string, string> _config;
@@ -78,10 +78,12 @@ namespace Appwrite
             };
 
             _config = new Dictionary<string, string>();
-            
-            // Load persistent data
+            // Load persistent data (non-WebGL only for cookies)
             LoadSession();
+#if !(UNITY_WEBGL && !UNITY_EDITOR)
             _cookieContainer.LoadCookies();
+#endif
+
         }
 
         public Client SetSelfSigned(bool selfSigned)
@@ -171,33 +173,6 @@ namespace Appwrite
             AddHeader("X-Appwrite-Dev-Key", value);
             
             return this;
-        }
-
-
-        /// <summary>
-        /// Initialize OAuth2 authentication flow
-        /// </summary>
-        /// <param name="provider">OAuth provider name</param>
-        /// <param name="success">Success callback URL</param>
-        /// <param name="failure">Failure callback URL</param>
-        /// <param name="scopes">OAuth scopes</param>
-        /// <returns>OAuth URL for authentication</returns>
-        public string PrepareOAuth2(string provider, string? success = null, string? failure = null, List<string>? scopes = null)
-        {
-            var parameters = new Dictionary<string, object?>
-            {
-                ["provider"] = provider,
-                ["success"] = success ?? $"{_endpoint}/auth/oauth2/success",
-                ["failure"] = failure ?? $"{_endpoint}/auth/oauth2/failure"
-            };
-
-            if (scopes is { Count: > 0 })
-            {
-                parameters["scopes"] = scopes;
-            }
-
-            var queryString = parameters.ToQueryString();
-            return $"{_endpoint}/auth/oauth2/{provider}?{queryString}";
         }
 
         /// <summary>
@@ -350,6 +325,7 @@ namespace Appwrite
                     }
                     else if (parameter.Value is IEnumerable<object> enumerable)
                     {
+                        if (parameter.Value == null) continue;
                         var list = new List<object>(enumerable);
                         for (int index = 0; index < list.Count; index++)
                         {
@@ -358,10 +334,10 @@ namespace Appwrite
                     }
                     else
                     {
+                        if (parameter.Value == null) continue;
                         form.Add(new MultipartFormDataSection(parameter.Key, parameter.Value?.ToString() ?? string.Empty));
                     }
                 }
-
                 request = UnityWebRequest.Post(url, form);
             }
             else if (methodGet)
@@ -394,10 +370,13 @@ namespace Appwrite
             // Add cookies
             var uri = new Uri(url);
             var cookieHeader = _cookieContainer.GetCookieHeader(uri.Host, uri.AbsolutePath);
+#if !(UNITY_WEBGL && !UNITY_EDITOR)
             if (!string.IsNullOrEmpty(cookieHeader))
             {
+                Debug.Log($"[Client] Setting cookie header: {cookieHeader}");
                 request.SetRequestHeader("Cookie", cookieHeader);
             }
+#endif
 
             // Handle self-signed certificates
             if (_selfSigned)
@@ -497,7 +476,6 @@ namespace Appwrite
             var request = PrepareRequest(method, path, headers, parameters);
 
             var operation = request.SendWebRequest();
-            
             while (!operation.isDone)
             {
                 await UniTask.Yield();
@@ -505,13 +483,17 @@ namespace Appwrite
 
             var code = (int)request.responseCode;
 
-            // Handle Set-Cookie headers
+            // Handle cookies after response
+#if !(UNITY_WEBGL && !UNITY_EDITOR)
+            // Handle Set-Cookie headers (non-WebGL)
             var setCookieHeader = request.GetResponseHeader("Set-Cookie");
             if (!string.IsNullOrEmpty(setCookieHeader))
             {
                 var uri = new Uri(request.url);
+                Debug.Log(setCookieHeader);
                 _cookieContainer.ParseSetCookieHeader(setCookieHeader, uri.Host);
             }
+#endif
 
             // Check for warnings
             var warning = request.GetResponseHeader("x-appwrite-warning");

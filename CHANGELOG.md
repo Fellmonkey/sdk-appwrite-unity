@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.0.0
+* Introduced `WebAuthComponent` for handling OAuth2 authentication via deep links on Unity Editor, iOS, Android, and WebGL
+* Added platform-specific cookie management
+* Implemented WebGL plugin to enable credentials for fetch/XHR
+* Updated `CookieContainer` for improved parsing and persistence
+* Refactored `Account.CreateOAuth2Session` to use the new authentication flow and set cookies from OAuth callbacks
+* Fixed model deserialization for optional fields
+* Exposed Realtime channels
+
 ## 0.5.0
 * Added persistent storage for session and JWT in Client
 * Implemented persistent cookie storage in CookieContainer with support for max-age, SameSite, and improved domain/path matching
