@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetBrowserExample : MonoBehaviour
 {
     private Client client;
-    
+    private Avatars avatars;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        avatars = new Avatars(client);
+
         await ExampleGetBrowser();
     }
     
@@ -28,13 +30,12 @@ public class GetBrowserExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var code = "aa"; // Browser Code.
-            
-            var result = await client.Avatars.GetBrowserAsync(
-                code
+            byte[] result = await avatars.GetBrowser(
+                code: Browser.AvantBrowser,
+                width: 0, // optional
+                height: 0, // optional
+                quality: -1 // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,14 +48,14 @@ public class GetBrowserExample : MonoBehaviour
 
 ## Parameters
 
-- **code** *string* - Browser Code. *(required)*
-- **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100.
-- **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100.
-- **quality** *integer* - Image quality. Pass an integer between 0 to 100. Defaults to keep existing image quality.
+- **code** *string* - Browser Code. *(required)* 
+- **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
+- **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
+- **quality** *integer* - Image quality. Pass an integer between 0 to 100. Defaults to keep existing image quality. *(optional)*
 
 ## Response
 
-Returns byte array of the file.
+Returns response object.
 ## More Info
 
 You can use this endpoint to show different browser icons to your users. The code argument receives the browser code as it appears in your user [GET /account/sessions](https://appwrite.io/docs/references/cloud/client-web/account#getSessions) endpoint. Use width, height and quality arguments to change the output settings.

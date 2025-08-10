@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateMFAExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdateMFA();
     }
     
@@ -28,13 +29,9 @@ public class UpdateMFAExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var mfa = false; // Enable or disable MFA.
-            
-            var result = await client.Account.UpdateMFAAsync(
-                mfa
+            User result = await account.UpdateMFA(
+                mfa: false
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +44,7 @@ public class UpdateMFAExample : MonoBehaviour
 
 ## Parameters
 
-- **mfa** *boolean* - Enable or disable MFA. *(required)*
+- **mfa** *boolean* - Enable or disable MFA. *(required)* 
 
 ## Response
 

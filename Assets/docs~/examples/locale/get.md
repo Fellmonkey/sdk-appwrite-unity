@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetExample : MonoBehaviour
 {
     private Client client;
-    
+    private Locale locale;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        locale = new Locale(client);
+
         await ExampleGet();
     }
     
@@ -28,9 +29,8 @@ public class GetExample : MonoBehaviour
     {
         try
         {
-            var result = await client.Locale.GetAsync(
-            );
-            
+            Locale result = await locale.Get();
+
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)

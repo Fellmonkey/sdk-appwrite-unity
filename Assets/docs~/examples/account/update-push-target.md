@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdatePushTargetExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdatePushTarget();
     }
     
@@ -28,15 +29,10 @@ public class UpdatePushTargetExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var targetId = "<TARGET_ID>"; // Target ID.
-            var identifier = "<IDENTIFIER>"; // The target identifier (token, email, phone etc.)
-            
-            var result = await client.Account.UpdatePushTargetAsync(
-                targetId,
-                identifier
+            Target result = await account.UpdatePushTarget(
+                targetId: "<TARGET_ID>",
+                identifier: "<IDENTIFIER>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class UpdatePushTargetExample : MonoBehaviour
 
 ## Parameters
 
-- **targetId** *string* - Target ID. *(required)*
-- **identifier** *string* - The target identifier (token, email, phone etc.) *(required)*
+- **targetId** *string* - Target ID. *(required)* 
+- **identifier** *string* - The target identifier (token, email, phone etc.) *(required)* 
 
 ## Response
 

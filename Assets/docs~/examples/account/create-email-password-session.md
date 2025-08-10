@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreateEmailPasswordSessionExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleCreateEmailPasswordSession();
     }
     
@@ -28,15 +29,10 @@ public class CreateEmailPasswordSessionExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var email = "email@example.com"; // User email.
-            var password = "password"; // User password. Must be at least 8 chars.
-            
-            var result = await client.Account.CreateEmailPasswordSessionAsync(
-                email,
-                password
+            Session result = await account.CreateEmailPasswordSession(
+                email: "email@example.com",
+                password: "password"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class CreateEmailPasswordSessionExample : MonoBehaviour
 
 ## Parameters
 
-- **email** *string* - User email. *(required)*
-- **password** *string* - User password. Must be at least 8 chars. *(required)*
+- **email** *string* - User email. *(required)* 
+- **password** *string* - User password. Must be at least 8 chars. *(required)* 
 
 ## Response
 

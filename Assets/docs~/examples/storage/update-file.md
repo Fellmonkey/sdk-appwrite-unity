@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateFileExample : MonoBehaviour
 {
     private Client client;
-    
+    private Storage storage;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        storage = new Storage(client);
+
         await ExampleUpdateFile();
     }
     
@@ -28,15 +29,12 @@ public class UpdateFileExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var bucketId = "<BUCKET_ID>"; // Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket).
-            var fileId = "<FILE_ID>"; // File unique ID.
-            
-            var result = await client.Storage.UpdateFileAsync(
-                bucketId,
-                fileId
+            File result = await storage.UpdateFile(
+                bucketId: "<BUCKET_ID>",
+                fileId: "<FILE_ID>",
+                name: "<NAME>", // optional
+                permissions: ["read("any")"] // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,10 +47,10 @@ public class UpdateFileExample : MonoBehaviour
 
 ## Parameters
 
-- **bucketId** *string* - Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). *(required)*
-- **fileId** *string* - File unique ID. *(required)*
-- **name** *string* - Name of the file
-- **permissions** *array* - An array of permission string. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions).
+- **bucketId** *string* - Storage bucket unique ID. You can create a new storage bucket using the Storage service [server integration](https://appwrite.io/docs/server/storage#createBucket). *(required)* 
+- **fileId** *string* - File unique ID. *(required)* 
+- **name** *string* - Name of the file *(optional)*
+- **permissions** *array* - An array of permission string. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
 
 ## Response
 

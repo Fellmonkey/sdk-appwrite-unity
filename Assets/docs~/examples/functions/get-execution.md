@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetExecutionExample : MonoBehaviour
 {
     private Client client;
-    
+    private Functions functions;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        functions = new Functions(client);
+
         await ExampleGetExecution();
     }
     
@@ -28,15 +29,10 @@ public class GetExecutionExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var functionId = "<FUNCTION_ID>"; // Function ID.
-            var executionId = "<EXECUTION_ID>"; // Execution ID.
-            
-            var result = await client.Functions.GetExecutionAsync(
-                functionId,
-                executionId
+            Execution result = await functions.GetExecution(
+                functionId: "<FUNCTION_ID>",
+                executionId: "<EXECUTION_ID>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class GetExecutionExample : MonoBehaviour
 
 ## Parameters
 
-- **functionId** *string* - Function ID. *(required)*
-- **executionId** *string* - Execution ID. *(required)*
+- **functionId** *string* - Function ID. *(required)* 
+- **executionId** *string* - Execution ID. *(required)* 
 
 ## Response
 

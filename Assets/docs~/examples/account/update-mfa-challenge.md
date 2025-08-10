@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateMfaChallengeExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdateMfaChallenge();
     }
     
@@ -28,15 +29,10 @@ public class UpdateMfaChallengeExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var challengeId = "<CHALLENGE_ID>"; // ID of the challenge.
-            var otp = "<OTP>"; // Valid verification token.
-            
-            var result = await client.Account.UpdateMfaChallengeAsync(
-                challengeId,
-                otp
+            Session result = await account.UpdateMfaChallenge(
+                challengeId: "<CHALLENGE_ID>",
+                otp: "<OTP>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class UpdateMfaChallengeExample : MonoBehaviour
 
 ## Parameters
 
-- **challengeId** *string* - ID of the challenge. *(required)*
-- **otp** *string* - Valid verification token. *(required)*
+- **challengeId** *string* - ID of the challenge. *(required)* 
+- **otp** *string* - Valid verification token. *(required)* 
 
 ## Response
 

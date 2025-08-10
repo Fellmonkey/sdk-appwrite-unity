@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreateMembershipExample : MonoBehaviour
 {
     private Client client;
-    
+    private Teams teams;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        teams = new Teams(client);
+
         await ExampleCreateMembership();
     }
     
@@ -28,15 +29,15 @@ public class CreateMembershipExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var teamId = "<TEAM_ID>"; // Team ID.
-            var roles = new List<string>(); // Array of strings. Use this param to set the user roles in the team. A role can be any string. Learn more about [roles and permissions](https://appwrite.io/docs/permissions). Maximum of 100 roles are allowed, each 32 characters long.
-            
-            var result = await client.Teams.CreateMembershipAsync(
-                teamId,
-                roles
+            Membership result = await teams.CreateMembership(
+                teamId: "<TEAM_ID>",
+                roles: new List<string>(),
+                email: "email@example.com", // optional
+                userId: "<USER_ID>", // optional
+                phone: "+12065550100", // optional
+                url: "https://example.com", // optional
+                name: "<NAME>" // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,13 +50,13 @@ public class CreateMembershipExample : MonoBehaviour
 
 ## Parameters
 
-- **teamId** *string* - Team ID. *(required)*
-- **roles** *array* - Array of strings. Use this param to set the user roles in the team. A role can be any string. Learn more about [roles and permissions](https://appwrite.io/docs/permissions). Maximum of 100 roles are allowed, each 32 characters long. *(required)*
-- **email** *string* - Email of the new team member.
-- **userId** *string* - ID of the user to be added to a team.
-- **phone** *string* - Phone number. Format this number with a leading &#039;+&#039; and a country code, e.g., +16175551212.
-- **url** *string* - URL to redirect the user back to your app from the invitation email. This parameter is not required when an API key is supplied. Only URLs from hostnames in your project platform list are allowed. This requirement helps to prevent an [open redirect](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html) attack against your project API.
-- **name** *string* - Name of the new team member. Max length: 128 chars.
+- **teamId** *string* - Team ID. *(required)* 
+- **roles** *array* - Array of strings. Use this param to set the user roles in the team. A role can be any string. Learn more about [roles and permissions](https://appwrite.io/docs/permissions). Maximum of 100 roles are allowed, each 32 characters long. *(required)* 
+- **email** *string* - Email of the new team member. *(optional)*
+- **userId** *string* - ID of the user to be added to a team. *(optional)*
+- **phone** *string* - Phone number. Format this number with a leading &#039;+&#039; and a country code, e.g., +16175551212. *(optional)*
+- **url** *string* - URL to redirect the user back to your app from the invitation email. This parameter is not required when an API key is supplied. Only URLs from hostnames in your project platform list are allowed. This requirement helps to prevent an [open redirect](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html) attack against your project API. *(optional)*
+- **name** *string* - Name of the new team member. Max length: 128 chars. *(optional)*
 
 ## Response
 

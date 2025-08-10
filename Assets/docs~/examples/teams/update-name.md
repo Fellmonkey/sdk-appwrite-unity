@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateNameExample : MonoBehaviour
 {
     private Client client;
-    
+    private Teams teams;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        teams = new Teams(client);
+
         await ExampleUpdateName();
     }
     
@@ -28,15 +29,10 @@ public class UpdateNameExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var teamId = "<TEAM_ID>"; // Team ID.
-            var name = "<NAME>"; // New team name. Max length: 128 chars.
-            
-            var result = await client.Teams.UpdateNameAsync(
-                teamId,
-                name
+            Team result = await teams.UpdateName(
+                teamId: "<TEAM_ID>",
+                name: "<NAME>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class UpdateNameExample : MonoBehaviour
 
 ## Parameters
 
-- **teamId** *string* - Team ID. *(required)*
-- **name** *string* - New team name. Max length: 128 chars. *(required)*
+- **teamId** *string* - Team ID. *(required)* 
+- **name** *string* - New team name. Max length: 128 chars. *(required)* 
 
 ## Response
 

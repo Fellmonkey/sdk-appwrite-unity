@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetCreditCardExample : MonoBehaviour
 {
     private Client client;
-    
+    private Avatars avatars;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        avatars = new Avatars(client);
+
         await ExampleGetCreditCard();
     }
     
@@ -28,13 +30,12 @@ public class GetCreditCardExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var code = "amex"; // Credit Card Code. Possible values: amex, argencard, cabal, cencosud, diners, discover, elo, hipercard, jcb, mastercard, naranja, targeta-shopping, union-china-pay, visa, mir, maestro, rupay.
-            
-            var result = await client.Avatars.GetCreditCardAsync(
-                code
+            byte[] result = await avatars.GetCreditCard(
+                code: CreditCard.AmericanExpress,
+                width: 0, // optional
+                height: 0, // optional
+                quality: -1 // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,14 +48,14 @@ public class GetCreditCardExample : MonoBehaviour
 
 ## Parameters
 
-- **code** *string* - Credit Card Code. Possible values: amex, argencard, cabal, cencosud, diners, discover, elo, hipercard, jcb, mastercard, naranja, targeta-shopping, union-china-pay, visa, mir, maestro, rupay. *(required)*
-- **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100.
-- **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100.
-- **quality** *integer* - Image quality. Pass an integer between 0 to 100. Defaults to keep existing image quality.
+- **code** *string* - Credit Card Code. Possible values: amex, argencard, cabal, cencosud, diners, discover, elo, hipercard, jcb, mastercard, naranja, targeta-shopping, union-china-pay, visa, mir, maestro, rupay. *(required)* 
+- **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
+- **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
+- **quality** *integer* - Image quality. Pass an integer between 0 to 100. Defaults to keep existing image quality. *(optional)*
 
 ## Response
 
-Returns byte array of the file.
+Returns response object.
 ## More Info
 
 The credit card endpoint will return you the icon of the credit card provider you need. Use width, height and quality arguments to change the output settings.

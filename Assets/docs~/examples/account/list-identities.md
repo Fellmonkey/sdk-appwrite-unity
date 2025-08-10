@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ListIdentitiesExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleListIdentities();
     }
     
@@ -28,9 +29,9 @@ public class ListIdentitiesExample : MonoBehaviour
     {
         try
         {
-            var result = await client.Account.ListIdentitiesAsync(
+            IdentityList result = await account.ListIdentities(
+                queries: new List<string>() // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -43,7 +44,7 @@ public class ListIdentitiesExample : MonoBehaviour
 
 ## Parameters
 
-- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: userId, provider, providerUid, providerEmail, providerAccessTokenExpiry
+- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: userId, provider, providerUid, providerEmail, providerAccessTokenExpiry *(optional)*
 
 ## Response
 

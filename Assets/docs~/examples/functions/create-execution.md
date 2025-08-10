@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreateExecutionExample : MonoBehaviour
 {
     private Client client;
-    
+    private Functions functions;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        functions = new Functions(client);
+
         await ExampleCreateExecution();
     }
     
@@ -28,13 +30,15 @@ public class CreateExecutionExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var functionId = "<FUNCTION_ID>"; // Function ID.
-            
-            var result = await client.Functions.CreateExecutionAsync(
-                functionId
+            Execution result = await functions.CreateExecution(
+                functionId: "<FUNCTION_ID>",
+                body: "<BODY>", // optional
+                async: false, // optional
+                path: "<PATH>", // optional
+                method: ExecutionMethod.GET, // optional
+                headers: [object], // optional
+                scheduledAt: "<SCHEDULED_AT>" // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,13 +51,13 @@ public class CreateExecutionExample : MonoBehaviour
 
 ## Parameters
 
-- **functionId** *string* - Function ID. *(required)*
-- **body** *string* - HTTP body of execution. Default value is empty string.
-- **async** *boolean* - Execute code in the background. Default value is false.
-- **path** *string* - HTTP path of execution. Path can include query params. Default value is /
-- **method** *string* - HTTP method of execution. Default value is GET.
-- **headers** *object* - HTTP headers of execution. Defaults to empty.
-- **scheduledAt** *string* - Scheduled execution time in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. DateTime value must be in future with precision in minutes.
+- **functionId** *string* - Function ID. *(required)* 
+- **body** *string* - HTTP body of execution. Default value is empty string. *(optional)*
+- **async** *boolean* - Execute code in the background. Default value is false. *(optional)*
+- **path** *string* - HTTP path of execution. Path can include query params. Default value is / *(optional)*
+- **method** *string* - HTTP method of execution. Default value is GET. *(optional)*
+- **headers** *object* - HTTP headers of execution. Defaults to empty. *(optional)*
+- **scheduledAt** *string* - Scheduled execution time in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. DateTime value must be in future with precision in minutes. *(optional)*
 
 ## Response
 

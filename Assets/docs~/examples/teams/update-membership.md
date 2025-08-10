@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateMembershipExample : MonoBehaviour
 {
     private Client client;
-    
+    private Teams teams;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        teams = new Teams(client);
+
         await ExampleUpdateMembership();
     }
     
@@ -28,17 +29,11 @@ public class UpdateMembershipExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var teamId = "<TEAM_ID>"; // Team ID.
-            var membershipId = "<MEMBERSHIP_ID>"; // Membership ID.
-            var roles = new List<string>(); // An array of strings. Use this param to set the user&#039;s roles in the team. A role can be any string. Learn more about [roles and permissions](https://appwrite.io/docs/permissions). Maximum of 100 roles are allowed, each 32 characters long.
-            
-            var result = await client.Teams.UpdateMembershipAsync(
-                teamId,
-                membershipId,
-                roles
+            Membership result = await teams.UpdateMembership(
+                teamId: "<TEAM_ID>",
+                membershipId: "<MEMBERSHIP_ID>",
+                roles: new List<string>()
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -51,9 +46,9 @@ public class UpdateMembershipExample : MonoBehaviour
 
 ## Parameters
 
-- **teamId** *string* - Team ID. *(required)*
-- **membershipId** *string* - Membership ID. *(required)*
-- **roles** *array* - An array of strings. Use this param to set the user&#039;s roles in the team. A role can be any string. Learn more about [roles and permissions](https://appwrite.io/docs/permissions). Maximum of 100 roles are allowed, each 32 characters long. *(required)*
+- **teamId** *string* - Team ID. *(required)* 
+- **membershipId** *string* - Membership ID. *(required)* 
+- **roles** *array* - An array of strings. Use this param to set the user&#039;s roles in the team. A role can be any string. Learn more about [roles and permissions](https://appwrite.io/docs/permissions). Maximum of 100 roles are allowed, each 32 characters long. *(required)* 
 
 ## Response
 

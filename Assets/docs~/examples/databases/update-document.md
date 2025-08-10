@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateDocumentExample : MonoBehaviour
 {
     private Client client;
-    
+    private Databases databases;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        databases = new Databases(client);
+
         await ExampleUpdateDocument();
     }
     
@@ -28,17 +29,13 @@ public class UpdateDocumentExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var databaseId = "<DATABASE_ID>"; // Database ID.
-            var collectionId = "<COLLECTION_ID>"; // Collection ID.
-            var documentId = "<DOCUMENT_ID>"; // Document ID.
-            
-            var result = await client.Databases.UpdateDocumentAsync(
-                databaseId,
-                collectionId,
-                documentId
+            Document result = await databases.UpdateDocument(
+                databaseId: "<DATABASE_ID>",
+                collectionId: "<COLLECTION_ID>",
+                documentId: "<DOCUMENT_ID>",
+                data: [object], // optional
+                permissions: ["read("any")"] // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -51,11 +48,11 @@ public class UpdateDocumentExample : MonoBehaviour
 
 ## Parameters
 
-- **databaseId** *string* - Database ID. *(required)*
-- **collectionId** *string* - Collection ID. *(required)*
-- **documentId** *string* - Document ID. *(required)*
-- **data** *object* - Document data as JSON object. Include only attribute and value pairs to be updated.
-- **permissions** *array* - An array of permissions strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions).
+- **databaseId** *string* - Database ID. *(required)* 
+- **collectionId** *string* - Collection ID. *(required)* 
+- **documentId** *string* - Document ID. *(required)* 
+- **data** *object* - Document data as JSON object. Include only attribute and value pairs to be updated. *(optional)*
+- **permissions** *array* - An array of permissions strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
 
 ## Response
 

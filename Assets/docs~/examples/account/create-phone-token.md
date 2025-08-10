@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreatePhoneTokenExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleCreatePhoneToken();
     }
     
@@ -28,15 +29,10 @@ public class CreatePhoneTokenExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var userId = "<USER_ID>"; // Unique Id. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars.
-            var phone = "+12065550100"; // Phone number. Format this number with a leading &#039;+&#039; and a country code, e.g., +16175551212.
-            
-            var result = await client.Account.CreatePhoneTokenAsync(
-                userId,
-                phone
+            Token result = await account.CreatePhoneToken(
+                userId: "<USER_ID>",
+                phone: "+12065550100"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class CreatePhoneTokenExample : MonoBehaviour
 
 ## Parameters
 
-- **userId** *string* - Unique Id. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)*
-- **phone** *string* - Phone number. Format this number with a leading &#039;+&#039; and a country code, e.g., +16175551212. *(required)*
+- **userId** *string* - Unique Id. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)* 
+- **phone** *string* - Phone number. Format this number with a leading &#039;+&#039; and a country code, e.g., +16175551212. *(required)* 
 
 ## Response
 

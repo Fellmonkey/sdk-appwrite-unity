@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdatePrefsExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdatePrefs();
     }
     
@@ -28,13 +29,9 @@ public class UpdatePrefsExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var prefs = [object]; // Prefs key-value JSON object.
-            
-            var result = await client.Account.UpdatePrefsAsync(
-                prefs
+            User result = await account.UpdatePrefs(
+                prefs: [object]
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +44,7 @@ public class UpdatePrefsExample : MonoBehaviour
 
 ## Parameters
 
-- **prefs** *object* - Prefs key-value JSON object. *(required)*
+- **prefs** *object* - Prefs key-value JSON object. *(required)* 
 
 ## Response
 

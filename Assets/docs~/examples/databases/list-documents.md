@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ListDocumentsExample : MonoBehaviour
 {
     private Client client;
-    
+    private Databases databases;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        databases = new Databases(client);
+
         await ExampleListDocuments();
     }
     
@@ -28,15 +29,11 @@ public class ListDocumentsExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var databaseId = "<DATABASE_ID>"; // Database ID.
-            var collectionId = "<COLLECTION_ID>"; // Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection).
-            
-            var result = await client.Databases.ListDocumentsAsync(
-                databaseId,
-                collectionId
+            DocumentList result = await databases.ListDocuments(
+                databaseId: "<DATABASE_ID>",
+                collectionId: "<COLLECTION_ID>",
+                queries: new List<string>() // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,9 +46,9 @@ public class ListDocumentsExample : MonoBehaviour
 
 ## Parameters
 
-- **databaseId** *string* - Database ID. *(required)*
-- **collectionId** *string* - Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection). *(required)*
-- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long.
+- **databaseId** *string* - Database ID. *(required)* 
+- **collectionId** *string* - Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection). *(required)* 
+- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. *(optional)*
 
 ## Response
 

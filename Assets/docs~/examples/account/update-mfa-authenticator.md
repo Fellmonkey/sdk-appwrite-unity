@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdateMfaAuthenticatorExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdateMfaAuthenticator();
     }
     
@@ -28,15 +30,10 @@ public class UpdateMfaAuthenticatorExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var type = "totp"; // Type of authenticator.
-            var otp = "<OTP>"; // Valid verification token.
-            
-            var result = await client.Account.UpdateMfaAuthenticatorAsync(
-                type,
-                otp
+            User result = await account.UpdateMfaAuthenticator(
+                type: AuthenticatorType.Totp,
+                otp: "<OTP>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +46,8 @@ public class UpdateMfaAuthenticatorExample : MonoBehaviour
 
 ## Parameters
 
-- **type** *string* - Type of authenticator. *(required)*
-- **otp** *string* - Valid verification token. *(required)*
+- **type** *string* - Type of authenticator. *(required)* 
+- **otp** *string* - Valid verification token. *(required)* 
 
 ## Response
 

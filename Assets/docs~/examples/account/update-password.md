@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdatePasswordExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdatePassword();
     }
     
@@ -28,13 +29,10 @@ public class UpdatePasswordExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var password = ""; // New user password. Must be at least 8 chars.
-            
-            var result = await client.Account.UpdatePasswordAsync(
-                password
+            User result = await account.UpdatePassword(
+                password: "",
+                oldPassword: "password" // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,8 +45,8 @@ public class UpdatePasswordExample : MonoBehaviour
 
 ## Parameters
 
-- **password** *string* - New user password. Must be at least 8 chars. *(required)*
-- **oldPassword** *string* - Current user password. Must be at least 8 chars.
+- **password** *string* - New user password. Must be at least 8 chars. *(required)* 
+- **oldPassword** *string* - Current user password. Must be at least 8 chars. *(optional)*
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class QueryExample : MonoBehaviour
 {
     private Client client;
-    
+    private Graphql graphql;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        graphql = new Graphql(client);
+
         await ExampleQuery();
     }
     
@@ -28,13 +29,9 @@ public class QueryExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var query = [object]; // The query or queries to execute.
-            
-            var result = await client.Graphql.QueryAsync(
-                query
+            Any result = await graphql.Query(
+                query: [object]
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +44,7 @@ public class QueryExample : MonoBehaviour
 
 ## Parameters
 
-- **query** *object* - The query or queries to execute. *(required)*
+- **query** *object* - The query or queries to execute. *(required)* 
 
 ## Response
 

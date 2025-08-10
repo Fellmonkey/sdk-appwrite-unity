@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpdatePhoneVerificationExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleUpdatePhoneVerification();
     }
     
@@ -28,15 +29,10 @@ public class UpdatePhoneVerificationExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var userId = "<USER_ID>"; // User ID.
-            var secret = "<SECRET>"; // Valid verification token.
-            
-            var result = await client.Account.UpdatePhoneVerificationAsync(
-                userId,
-                secret
+            Token result = await account.UpdatePhoneVerification(
+                userId: "<USER_ID>",
+                secret: "<SECRET>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class UpdatePhoneVerificationExample : MonoBehaviour
 
 ## Parameters
 
-- **userId** *string* - User ID. *(required)*
-- **secret** *string* - Valid verification token. *(required)*
+- **userId** *string* - User ID. *(required)* 
+- **secret** *string* - Valid verification token. *(required)* 
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetSessionExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleGetSession();
     }
     
@@ -28,13 +29,9 @@ public class GetSessionExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var sessionId = "<SESSION_ID>"; // Session ID. Use the string &#039;current&#039; to get the current device session.
-            
-            var result = await client.Account.GetSessionAsync(
-                sessionId
+            Session result = await account.GetSession(
+                sessionId: "<SESSION_ID>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +44,7 @@ public class GetSessionExample : MonoBehaviour
 
 ## Parameters
 
-- **sessionId** *string* - Session ID. Use the string &#039;current&#039; to get the current device session. *(required)*
+- **sessionId** *string* - Session ID. Use the string &#039;current&#039; to get the current device session. *(required)* 
 
 ## Response
 

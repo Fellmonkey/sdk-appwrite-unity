@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DeleteMfaAuthenticatorExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleDeleteMfaAuthenticator();
     }
     
@@ -28,14 +30,10 @@ public class DeleteMfaAuthenticatorExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var type = "totp"; // Type of authenticator.
-            
-            var result = await client.Account.DeleteMfaAuthenticatorAsync(
-                type
+await account.DeleteMfaAuthenticator(
+                type: AuthenticatorType.Totp
             );
-            
-            Debug.Log("Success: " + result);
+            Debug.Log("Success");
         }
         catch (AppwriteException ex)
         {
@@ -47,7 +45,7 @@ public class DeleteMfaAuthenticatorExample : MonoBehaviour
 
 ## Parameters
 
-- **type** *string* - Type of authenticator. *(required)*
+- **type** *string* - Type of authenticator. *(required)* 
 
 ## Response
 

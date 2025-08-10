@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetImageExample : MonoBehaviour
 {
     private Client client;
-    
+    private Avatars avatars;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        avatars = new Avatars(client);
+
         await ExampleGetImage();
     }
     
@@ -28,13 +29,11 @@ public class GetImageExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var url = "https://example.com"; // Image URL which you want to crop.
-            
-            var result = await client.Avatars.GetImageAsync(
-                url
+            byte[] result = await avatars.GetImage(
+                url: "https://example.com",
+                width: 0, // optional
+                height: 0 // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,13 +46,13 @@ public class GetImageExample : MonoBehaviour
 
 ## Parameters
 
-- **url** *string* - Image URL which you want to crop. *(required)*
-- **width** *integer* - Resize preview image width, Pass an integer between 0 to 2000. Defaults to 400.
-- **height** *integer* - Resize preview image height, Pass an integer between 0 to 2000. Defaults to 400.
+- **url** *string* - Image URL which you want to crop. *(required)* 
+- **width** *integer* - Resize preview image width, Pass an integer between 0 to 2000. Defaults to 400. *(optional)*
+- **height** *integer* - Resize preview image height, Pass an integer between 0 to 2000. Defaults to 400. *(optional)*
 
 ## Response
 
-Returns byte array of the file.
+Returns response object.
 ## More Info
 
 Use this endpoint to fetch a remote image URL and crop it to any image size you want. This endpoint is very useful if you need to crop and display remote images in your app or in case you want to make sure a 3rd party image is properly served using a TLS protocol.

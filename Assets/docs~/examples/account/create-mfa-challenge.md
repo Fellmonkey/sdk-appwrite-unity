@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreateMfaChallengeExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleCreateMfaChallenge();
     }
     
@@ -28,13 +30,9 @@ public class CreateMfaChallengeExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var factor = "email"; // Factor used for verification. Must be one of following: `email`, `phone`, `totp`, `recoveryCode`.
-            
-            var result = await client.Account.CreateMfaChallengeAsync(
-                factor
+            MfaChallenge result = await account.CreateMfaChallenge(
+                factor: AuthenticationFactor.Email
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +45,7 @@ public class CreateMfaChallengeExample : MonoBehaviour
 
 ## Parameters
 
-- **factor** *string* - Factor used for verification. Must be one of following: `email`, `phone`, `totp`, `recoveryCode`. *(required)*
+- **factor** *string* - Factor used for verification. Must be one of following: `email`, `phone`, `totp`, `recoveryCode`. *(required)* 
 
 ## Response
 

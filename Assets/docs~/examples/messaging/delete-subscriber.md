@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DeleteSubscriberExample : MonoBehaviour
 {
     private Client client;
-    
+    private Messaging messaging;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        messaging = new Messaging(client);
+
         await ExampleDeleteSubscriber();
     }
     
@@ -28,16 +29,11 @@ public class DeleteSubscriberExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var topicId = "<TOPIC_ID>"; // Topic ID. The topic ID subscribed to.
-            var subscriberId = "<SUBSCRIBER_ID>"; // Subscriber ID.
-            
-            var result = await client.Messaging.DeleteSubscriberAsync(
-                topicId,
-                subscriberId
+await messaging.DeleteSubscriber(
+                topicId: "<TOPIC_ID>",
+                subscriberId: "<SUBSCRIBER_ID>"
             );
-            
-            Debug.Log("Success: " + result);
+            Debug.Log("Success");
         }
         catch (AppwriteException ex)
         {
@@ -49,8 +45,8 @@ public class DeleteSubscriberExample : MonoBehaviour
 
 ## Parameters
 
-- **topicId** *string* - Topic ID. The topic ID subscribed to. *(required)*
-- **subscriberId** *string* - Subscriber ID. *(required)*
+- **topicId** *string* - Topic ID. The topic ID subscribed to. *(required)* 
+- **subscriberId** *string* - Subscriber ID. *(required)* 
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DeleteDocumentExample : MonoBehaviour
 {
     private Client client;
-    
+    private Databases databases;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        databases = new Databases(client);
+
         await ExampleDeleteDocument();
     }
     
@@ -28,18 +29,12 @@ public class DeleteDocumentExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var databaseId = "<DATABASE_ID>"; // Database ID.
-            var collectionId = "<COLLECTION_ID>"; // Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection).
-            var documentId = "<DOCUMENT_ID>"; // Document ID.
-            
-            var result = await client.Databases.DeleteDocumentAsync(
-                databaseId,
-                collectionId,
-                documentId
+await databases.DeleteDocument(
+                databaseId: "<DATABASE_ID>",
+                collectionId: "<COLLECTION_ID>",
+                documentId: "<DOCUMENT_ID>"
             );
-            
-            Debug.Log("Success: " + result);
+            Debug.Log("Success");
         }
         catch (AppwriteException ex)
         {
@@ -51,9 +46,9 @@ public class DeleteDocumentExample : MonoBehaviour
 
 ## Parameters
 
-- **databaseId** *string* - Database ID. *(required)*
-- **collectionId** *string* - Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection). *(required)*
-- **documentId** *string* - Document ID. *(required)*
+- **databaseId** *string* - Database ID. *(required)* 
+- **collectionId** *string* - Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection). *(required)* 
+- **documentId** *string* - Document ID. *(required)* 
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetMembershipExample : MonoBehaviour
 {
     private Client client;
-    
+    private Teams teams;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        teams = new Teams(client);
+
         await ExampleGetMembership();
     }
     
@@ -28,15 +29,10 @@ public class GetMembershipExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var teamId = "<TEAM_ID>"; // Team ID.
-            var membershipId = "<MEMBERSHIP_ID>"; // Membership ID.
-            
-            var result = await client.Teams.GetMembershipAsync(
-                teamId,
-                membershipId
+            Membership result = await teams.GetMembership(
+                teamId: "<TEAM_ID>",
+                membershipId: "<MEMBERSHIP_ID>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,8 +45,8 @@ public class GetMembershipExample : MonoBehaviour
 
 ## Parameters
 
-- **teamId** *string* - Team ID. *(required)*
-- **membershipId** *string* - Membership ID. *(required)*
+- **teamId** *string* - Team ID. *(required)* 
+- **membershipId** *string* - Membership ID. *(required)* 
 
 ## Response
 

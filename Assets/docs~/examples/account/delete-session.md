@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DeleteSessionExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleDeleteSession();
     }
     
@@ -28,14 +29,10 @@ public class DeleteSessionExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var sessionId = "<SESSION_ID>"; // Session ID. Use the string &#039;current&#039; to delete the current device session.
-            
-            var result = await client.Account.DeleteSessionAsync(
-                sessionId
+await account.DeleteSession(
+                sessionId: "<SESSION_ID>"
             );
-            
-            Debug.Log("Success: " + result);
+            Debug.Log("Success");
         }
         catch (AppwriteException ex)
         {
@@ -47,7 +44,7 @@ public class DeleteSessionExample : MonoBehaviour
 
 ## Parameters
 
-- **sessionId** *string* - Session ID. Use the string &#039;current&#039; to delete the current device session. *(required)*
+- **sessionId** *string* - Session ID. Use the string &#039;current&#039; to delete the current device session. *(required)* 
 
 ## Response
 

@@ -4,23 +4,25 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreateMfaAuthenticatorExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleCreateMfaAuthenticator();
     }
     
@@ -28,13 +30,9 @@ public class CreateMfaAuthenticatorExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var type = "totp"; // Type of authenticator. Must be `totp`
-            
-            var result = await client.Account.CreateMfaAuthenticatorAsync(
-                type
+            MfaType result = await account.CreateMfaAuthenticator(
+                type: AuthenticatorType.Totp
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +45,7 @@ public class CreateMfaAuthenticatorExample : MonoBehaviour
 
 ## Parameters
 
-- **type** *string* - Type of authenticator. Must be `totp` *(required)*
+- **type** *string* - Type of authenticator. Must be `totp` *(required)* 
 
 ## Response
 

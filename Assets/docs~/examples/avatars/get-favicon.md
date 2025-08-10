@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetFaviconExample : MonoBehaviour
 {
     private Client client;
-    
+    private Avatars avatars;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        avatars = new Avatars(client);
+
         await ExampleGetFavicon();
     }
     
@@ -28,13 +29,9 @@ public class GetFaviconExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var url = "https://example.com"; // Website URL which you want to fetch the favicon from.
-            
-            var result = await client.Avatars.GetFaviconAsync(
-                url
+            byte[] result = await avatars.GetFavicon(
+                url: "https://example.com"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,11 +44,11 @@ public class GetFaviconExample : MonoBehaviour
 
 ## Parameters
 
-- **url** *string* - Website URL which you want to fetch the favicon from. *(required)*
+- **url** *string* - Website URL which you want to fetch the favicon from. *(required)* 
 
 ## Response
 
-Returns byte array of the file.
+Returns response object.
 ## More Info
 
 Use this endpoint to fetch the favorite icon (AKA favicon) of any remote website URL.

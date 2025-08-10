@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class UpsertDocumentExample : MonoBehaviour
 {
     private Client client;
-    
+    private Databases databases;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        databases = new Databases(client);
+
         await ExampleUpsertDocument();
     }
     
@@ -28,19 +29,13 @@ public class UpsertDocumentExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var databaseId = "<DATABASE_ID>"; // Database ID.
-            var collectionId = "<COLLECTION_ID>"; // Collection ID.
-            var documentId = "<DOCUMENT_ID>"; // Document ID.
-            var data = [object]; // Document data as JSON object. Include all required attributes of the document to be created or updated.
-            
-            var result = await client.Databases.UpsertDocumentAsync(
-                databaseId,
-                collectionId,
-                documentId,
-                data
+            Document result = await databases.UpsertDocument(
+                databaseId: "<DATABASE_ID>",
+                collectionId: "<COLLECTION_ID>",
+                documentId: "<DOCUMENT_ID>",
+                data: [object],
+                permissions: ["read("any")"] // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -53,11 +48,11 @@ public class UpsertDocumentExample : MonoBehaviour
 
 ## Parameters
 
-- **databaseId** *string* - Database ID. *(required)*
-- **collectionId** *string* - Collection ID. *(required)*
-- **documentId** *string* - Document ID. *(required)*
-- **data** *object* - Document data as JSON object. Include all required attributes of the document to be created or updated. *(required)*
-- **permissions** *array* - An array of permissions strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions).
+- **databaseId** *string* - Database ID. *(required)* 
+- **collectionId** *string* - Collection ID. *(required)* 
+- **documentId** *string* - Document ID. *(required)* 
+- **data** *object* - Document data as JSON object. Include all required attributes of the document to be created or updated. *(required)* 
+- **permissions** *array* - An array of permissions strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
 
 ## Response
 

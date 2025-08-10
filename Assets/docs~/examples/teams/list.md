@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ListExample : MonoBehaviour
 {
     private Client client;
-    
+    private Teams teams;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        teams = new Teams(client);
+
         await ExampleList();
     }
     
@@ -28,9 +29,10 @@ public class ListExample : MonoBehaviour
     {
         try
         {
-            var result = await client.Teams.ListAsync(
+            TeamList result = await teams.List(
+                queries: new List<string>(), // optional
+                search: "<SEARCH>" // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -43,8 +45,8 @@ public class ListExample : MonoBehaviour
 
 ## Parameters
 
-- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: name, total, billingPlan
-- **search** *string* - Search term to filter your list results. Max length: 256 chars.
+- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: name, total, billingPlan *(optional)*
+- **search** *string* - Search term to filter your list results. Max length: 256 chars. *(optional)*
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class ListExecutionsExample : MonoBehaviour
 {
     private Client client;
-    
+    private Functions functions;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        functions = new Functions(client);
+
         await ExampleListExecutions();
     }
     
@@ -28,13 +29,10 @@ public class ListExecutionsExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var functionId = "<FUNCTION_ID>"; // Function ID.
-            
-            var result = await client.Functions.ListExecutionsAsync(
-                functionId
+            ExecutionList result = await functions.ListExecutions(
+                functionId: "<FUNCTION_ID>",
+                queries: new List<string>() // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,8 +45,8 @@ public class ListExecutionsExample : MonoBehaviour
 
 ## Parameters
 
-- **functionId** *string* - Function ID. *(required)*
-- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId
+- **functionId** *string* - Function ID. *(required)* 
+- **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId *(optional)*
 
 ## Response
 

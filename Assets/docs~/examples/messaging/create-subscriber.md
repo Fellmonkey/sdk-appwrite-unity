@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreateSubscriberExample : MonoBehaviour
 {
     private Client client;
-    
+    private Messaging messaging;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        messaging = new Messaging(client);
+
         await ExampleCreateSubscriber();
     }
     
@@ -28,17 +29,11 @@ public class CreateSubscriberExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var topicId = "<TOPIC_ID>"; // Topic ID. The topic ID to subscribe to.
-            var subscriberId = "<SUBSCRIBER_ID>"; // Subscriber ID. Choose a custom Subscriber ID or a new Subscriber ID.
-            var targetId = "<TARGET_ID>"; // Target ID. The target ID to link to the specified Topic ID.
-            
-            var result = await client.Messaging.CreateSubscriberAsync(
-                topicId,
-                subscriberId,
-                targetId
+            Subscriber result = await messaging.CreateSubscriber(
+                topicId: "<TOPIC_ID>",
+                subscriberId: "<SUBSCRIBER_ID>",
+                targetId: "<TARGET_ID>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -51,9 +46,9 @@ public class CreateSubscriberExample : MonoBehaviour
 
 ## Parameters
 
-- **topicId** *string* - Topic ID. The topic ID to subscribe to. *(required)*
-- **subscriberId** *string* - Subscriber ID. Choose a custom Subscriber ID or a new Subscriber ID. *(required)*
-- **targetId** *string* - Target ID. The target ID to link to the specified Topic ID. *(required)*
+- **topicId** *string* - Topic ID. The topic ID to subscribe to. *(required)* 
+- **subscriberId** *string* - Subscriber ID. Choose a custom Subscriber ID or a new Subscriber ID. *(required)* 
+- **targetId** *string* - Target ID. The target ID to link to the specified Topic ID. *(required)* 
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetPrefsExample : MonoBehaviour
 {
     private Client client;
-    
+    private Teams teams;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        teams = new Teams(client);
+
         await ExampleGetPrefs();
     }
     
@@ -28,13 +29,9 @@ public class GetPrefsExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var teamId = "<TEAM_ID>"; // Team ID.
-            
-            var result = await client.Teams.GetPrefsAsync(
-                teamId
+            Preferences result = await teams.GetPrefs(
+                teamId: "<TEAM_ID>"
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -47,7 +44,7 @@ public class GetPrefsExample : MonoBehaviour
 
 ## Parameters
 
-- **teamId** *string* - Team ID. *(required)*
+- **teamId** *string* - Team ID. *(required)* 
 
 ## Response
 

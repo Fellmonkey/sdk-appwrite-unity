@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class CreatePushTargetExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleCreatePushTarget();
     }
     
@@ -28,15 +29,11 @@ public class CreatePushTargetExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var targetId = "<TARGET_ID>"; // Target ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars.
-            var identifier = "<IDENTIFIER>"; // The target identifier (token, email, phone etc.)
-            
-            var result = await client.Account.CreatePushTargetAsync(
-                targetId,
-                identifier
+            Target result = await account.CreatePushTarget(
+                targetId: "<TARGET_ID>",
+                identifier: "<IDENTIFIER>",
+                providerId: "<PROVIDER_ID>" // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -49,9 +46,9 @@ public class CreatePushTargetExample : MonoBehaviour
 
 ## Parameters
 
-- **targetId** *string* - Target ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)*
-- **identifier** *string* - The target identifier (token, email, phone etc.) *(required)*
-- **providerId** *string* - Provider ID. Message will be sent to this target from the specified provider ID. If no provider ID is set the first setup provider will be used.
+- **targetId** *string* - Target ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)* 
+- **identifier** *string* - The target identifier (token, email, phone etc.) *(required)* 
+- **providerId** *string* - Provider ID. Message will be sent to this target from the specified provider ID. If no provider ID is set the first setup provider will be used. *(optional)*
 
 ## Response
 

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DecrementDocumentAttributeExample : MonoBehaviour
 {
     private Client client;
-    
+    private Databases databases;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        databases = new Databases(client);
+
         await ExampleDecrementDocumentAttribute();
     }
     
@@ -28,19 +29,14 @@ public class DecrementDocumentAttributeExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var databaseId = "<DATABASE_ID>"; // Database ID.
-            var collectionId = "<COLLECTION_ID>"; // Collection ID.
-            var documentId = "<DOCUMENT_ID>"; // Document ID.
-            var attribute = ""; // Attribute key.
-            
-            var result = await client.Databases.DecrementDocumentAttributeAsync(
-                databaseId,
-                collectionId,
-                documentId,
-                attribute
+            Document result = await databases.DecrementDocumentAttribute(
+                databaseId: "<DATABASE_ID>",
+                collectionId: "<COLLECTION_ID>",
+                documentId: "<DOCUMENT_ID>",
+                attribute: "",
+                value: 0, // optional
+                min: 0 // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -53,12 +49,12 @@ public class DecrementDocumentAttributeExample : MonoBehaviour
 
 ## Parameters
 
-- **databaseId** *string* - Database ID. *(required)*
-- **collectionId** *string* - Collection ID. *(required)*
-- **documentId** *string* - Document ID. *(required)*
-- **attribute** *string* - Attribute key. *(required)*
-- **value** *number* - Value to decrement the attribute by. The value must be a number.
-- **min** *number* - Minimum value for the attribute. If the current value is lesser than this value, an exception will be thrown.
+- **databaseId** *string* - Database ID. *(required)* 
+- **collectionId** *string* - Collection ID. *(required)* 
+- **documentId** *string* - Document ID. *(required)* 
+- **attribute** *string* - Attribute key. *(required)* 
+- **value** *number* - Value to decrement the attribute by. The value must be a number. *(optional)*
+- **min** *number* - Minimum value for the attribute. If the current value is lesser than this value, an exception will be thrown. *(optional)*
 
 ## Response
 

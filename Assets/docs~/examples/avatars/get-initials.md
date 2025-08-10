@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class GetInitialsExample : MonoBehaviour
 {
     private Client client;
-    
+    private Avatars avatars;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        avatars = new Avatars(client);
+
         await ExampleGetInitials();
     }
     
@@ -28,9 +29,12 @@ public class GetInitialsExample : MonoBehaviour
     {
         try
         {
-            var result = await client.Avatars.GetInitialsAsync(
+            byte[] result = await avatars.GetInitials(
+                name: "<NAME>", // optional
+                width: 0, // optional
+                height: 0, // optional
+                background: "" // optional
             );
-            
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -43,14 +47,14 @@ public class GetInitialsExample : MonoBehaviour
 
 ## Parameters
 
-- **name** *string* - Full Name. When empty, current user name or email will be used. Max length: 128 chars.
-- **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100.
-- **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100.
-- **background** *string* - Changes background color. By default a random color will be picked and stay will persistent to the given name.
+- **name** *string* - Full Name. When empty, current user name or email will be used. Max length: 128 chars. *(optional)*
+- **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
+- **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
+- **background** *string* - Changes background color. By default a random color will be picked and stay will persistent to the given name. *(optional)*
 
 ## Response
 
-Returns byte array of the file.
+Returns response object.
 ## More Info
 
 Use this endpoint to show your user initials avatar icon on your website or app. By default, this route will try to print your logged-in user name or email initials. You can also overwrite the user name if you pass the &#039;name&#039; parameter. If no name is given and no user is logged, an empty avatar will be returned.

@@ -4,23 +4,24 @@
 
 ```csharp
 using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 public class DeletePushTargetExample : MonoBehaviour
 {
     private Client client;
-    
+    private Account account;
+
     async void Start()
     {
-        client = gameObject.AddComponent<Client>();
-        client.SetEndpoint("https://cloud.appwrite.io/v1")
-              .SetXAppwriteProject("YOUR_PROJECT");
-              .SetXAppwriteJWT("YOUR_JWT");
-              .SetXAppwriteLocale("YOUR_LOCALE");
-              .SetXAppwriteSession("YOUR_SESSION");
-              .SetXAppwriteDevKey("YOUR_DEVKEY");
-        
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
         await ExampleDeletePushTarget();
     }
     
@@ -28,14 +29,10 @@ public class DeletePushTargetExample : MonoBehaviour
     {
         try
         {
-            // Setup parameters
-            var targetId = "<TARGET_ID>"; // Target ID.
-            
-            var result = await client.Account.DeletePushTargetAsync(
-                targetId
+await account.DeletePushTarget(
+                targetId: "<TARGET_ID>"
             );
-            
-            Debug.Log("Success: " + result);
+            Debug.Log("Success");
         }
         catch (AppwriteException ex)
         {
@@ -47,7 +44,7 @@ public class DeletePushTargetExample : MonoBehaviour
 
 ## Parameters
 
-- **targetId** *string* - Target ID. *(required)*
+- **targetId** *string* - Target ID. *(required)* 
 
 ## Response
 
