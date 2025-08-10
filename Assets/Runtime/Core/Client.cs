@@ -490,7 +490,6 @@ namespace Appwrite
             if (!string.IsNullOrEmpty(setCookieHeader))
             {
                 var uri = new Uri(request.url);
-                Debug.Log(setCookieHeader);
                 _cookieContainer.ParseSetCookieHeader(setCookieHeader, uri.Host);
             }
 #endif
