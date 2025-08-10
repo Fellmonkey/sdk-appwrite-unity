@@ -34,11 +34,11 @@ namespace Appwrite
     public class AppwriteConfig : ScriptableObject
     {
         [Header("Connection Settings")]
-        [Tooltip("Endpoint URL for Appwrite API (e.g., https://cloud.Appwrite.io/v1)")]
-        [SerializeField] private string endpoint = "https://cloud.Appwrite.io/v1";
+        [Tooltip("Endpoint URL for Appwrite API (e.g., https://cloud.appwrite.io/v1)")]
+        [SerializeField] private string endpoint = "https://cloud.appwrite.io/v1";
         
         [Tooltip("WebSocket endpoint for realtime updates (optional)")]
-        [SerializeField] private string realtimeEndpoint = "wss://cloud.Appwrite.io/v1";
+        [SerializeField] private string realtimeEndpoint = "wss://cloud.appwrite.io/v1";
         
         [Tooltip("Enable if using a self-signed SSL certificate")]
         [SerializeField] private bool selfSigned;
