@@ -460,9 +460,9 @@ namespace Appwrite
             await CloseConnection();
         }
         
-        private async void OnDestroy()
+        private void OnDestroy()
         {
-            await Disconnect();
+            Disconnect().Forget();
         }
     }
 }

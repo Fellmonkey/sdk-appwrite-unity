@@ -48,7 +48,7 @@ public class GetCreditCardExample : MonoBehaviour
 
 ## Parameters
 
-- **code** *string* - Credit Card Code. Possible values: amex, argencard, cabal, cencosud, diners, discover, elo, hipercard, jcb, mastercard, naranja, targeta-shopping, union-china-pay, visa, mir, maestro, rupay. *(required)* 
+- **code** *string* - Credit Card Code. Possible values: amex, argencard, cabal, cencosud, diners, discover, elo, hipercard, jcb, mastercard, naranja, targeta-shopping, unionpay, visa, mir, maestro, rupay. *(required)* 
 - **width** *integer* - Image width. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
 - **height** *integer* - Image height. Pass an integer between 0 to 2000. Defaults to 100. *(optional)*
 - **quality** *integer* - Image quality. Pass an integer between 0 to 100. Defaults to keep existing image quality. *(optional)*

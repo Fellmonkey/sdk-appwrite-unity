@@ -1,5 +1,12 @@
 # Change Log
 
+## 1.2.0
+Last version for api 1.7.x
+* Introduces new spatial and range query methods (e.g., `CreatedBetween`, `UpdatedBetween`, `DistanceEqual`, `Intersects`, etc.) to the `Query` class.
+* Updates documentation and comments for account token creation methods to clarify user ID handling.
+* Fixes a credit card enum value and updates related documentation. (Union_Pay)
+* Refactors async lifecycle methods in `AppwriteManager` and `Realtime` to use `.Forget()` instead of `async void`.
+
 ## 1.1.0
 * Refactored the `AppwriteSetupAssistant` and `AppwriteSetupWindow` to provide more reliable, asynchronous package installation and status refresh, with improved UI feedback and error handling.
   - The setup assistant now prevents concurrent operations and supports callbacks for install completion.

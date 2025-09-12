@@ -70,11 +70,11 @@ namespace Appwrite
             }
         }
 
-        private async void Start()
+        private void Start()
         {
             if (initializeOnStart)
             {
-                await Initialize();
+                Initialize().Forget();
             }
         }
         

@@ -41,7 +41,7 @@ namespace Samples.AppwriteExample
             }
             
             // Initialize
-            var success = await _manager.Initialize();
+            var success = await _manager.Initialize(true);
             if (!success)
             {
                 Debug.LogError("Failed to initialize AppwriteManager");

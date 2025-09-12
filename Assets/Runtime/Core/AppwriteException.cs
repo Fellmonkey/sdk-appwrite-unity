@@ -18,10 +18,10 @@ namespace Appwrite
             this.Type = type;
             this.Response = response;
         }
-
         public AppwriteException(string message, Exception inner)
         : base(message, inner)
         {
         }
     }
 }
+

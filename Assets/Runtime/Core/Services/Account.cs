@@ -1044,7 +1044,7 @@ namespace Appwrite.Services
             // Create a Set-Cookie header format and parse it
             // This ensures consistent cookie processing with server responses
             var setCookieHeader = $"{key}={secret}; Path=/; Domain={parsedDomain}; Secure; HttpOnly; Max-Age={30 * 24 * 60 * 60}";
-            Debug.Log($"Setting cookie: {setCookieHeader} for domain: {parsedDomain}");
+            Debug.Log($"Setting session cookie for domain: {parsedDomain}");
             _client.CookieContainer.ParseSetCookieHeader(setCookieHeader, parsedDomain);
 
 #if UNITY_EDITOR
@@ -1360,8 +1360,11 @@ namespace Appwrite.Services
 
         /// <para>
         /// Sends the user an email with a secret key for creating a session. If the
-        /// provided user ID has not be registered, a new user will be created. Use the
-        /// returned user ID and secret and submit a request to the [POST
+        /// email address has never been used, a **new account is created** using the
+        /// provided `userId`. Otherwise, if the email address is already attached to
+        /// an account, the **user ID is ignored**. Then, the user will receive an
+        /// email with the one-time password. Use the returned user ID and secret and
+        /// submit a request to the [POST
         /// /v1/account/sessions/token](https://appwrite.io/docs/references/cloud/client-web/account#createSession)
         /// endpoint to complete the login process. The secret sent to the user's email
         /// is valid for 15 minutes.
@@ -1369,6 +1372,7 @@ namespace Appwrite.Services
         /// A user is limited to 10 active sessions at a time by default. [Learn more
         /// about session
         /// limits](https://appwrite.io/docs/authentication-security#limits).
+        /// 
         /// </para>
         /// </summary>
         public UniTask<Models.Token> CreateEmailToken(string userId, string email, bool? phrase = null)
@@ -1508,7 +1512,7 @@ namespace Appwrite.Services
             // Create a Set-Cookie header format and parse it
             // This ensures consistent cookie processing with server responses
             var setCookieHeader = $"{key}={secret}; Path=/; Domain={parsedDomain}; Secure; HttpOnly; Max-Age={30 * 24 * 60 * 60}";
-            Debug.Log($"Setting cookie: {setCookieHeader} for domain: {parsedDomain}");
+            Debug.Log($"Setting session cookie for domain: {parsedDomain}");
             _client.CookieContainer.ParseSetCookieHeader(setCookieHeader, parsedDomain);
 
 #if UNITY_EDITOR
