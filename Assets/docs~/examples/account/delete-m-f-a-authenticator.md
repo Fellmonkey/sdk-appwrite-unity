@@ -1,15 +1,16 @@
-# UpdatePrefs
+# DeleteMFAAuthenticator
 
 ## Example
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
 using Appwrite.Models;
 using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class UpdatePrefsExample : MonoBehaviour
+public class DeleteMFAAuthenticatorExample : MonoBehaviour
 {
     private Client client;
     private Account account;
@@ -22,21 +23,17 @@ public class UpdatePrefsExample : MonoBehaviour
 
         account = new Account(client);
 
-        await ExampleUpdatePrefs();
+        await ExampleDeleteMFAAuthenticator();
     }
     
-    async UniTask ExampleUpdatePrefs()
+    async UniTask ExampleDeleteMFAAuthenticator()
     {
         try
         {
-            User result = await account.UpdatePrefs(
-                prefs: new {
-        language = "en",
-        timezone = "UTC",
-        darkTheme = true
-    }
+await account.DeleteMFAAuthenticator(
+                type: AuthenticatorType.Totp
             );
-            Debug.Log("Success: " + result);
+            Debug.Log("Success");
         }
         catch (AppwriteException ex)
         {
@@ -48,11 +45,11 @@ public class UpdatePrefsExample : MonoBehaviour
 
 ## Parameters
 
-- **prefs** *object* - Prefs key-value JSON object. *(required)* 
+- **type** *string* - Type of authenticator. *(required)* 
 
 ## Response
 
-Returns `User` object.
+Returns response object.
 ## More Info
 
-Update currently logged in user account preferences. The object you pass is stored as is, and replaces any previous value. The maximum allowed prefs size is 64kB and throws error if exceeded.
+Delete an authenticator for a user by ID.

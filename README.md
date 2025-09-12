@@ -4,7 +4,7 @@
 ![Unity](https://img.shields.io/badge/Unity-2021.3+-blue.svg)
 ![License](https://img.shields.io/github/license/fellmonkey/sdk-appwrite-unity.svg?style=flat-square)
 
-**This SDK is compatible with Appwrite server version 1.7.x.**
+**This SDK is compatible with Appwrite server version 1.8.x.**
 
 Appwrite is an open-source backend-as-a-service that abstracts and simplifies complex development tasks behind a simple REST API. The Unity SDK allows you to easily integrate your Unity app with Appwrite, providing access to authentication, databases, storage, real-time features, and more.
 
@@ -27,6 +27,12 @@ https://github.com/fellmonkey/sdk-appwrite-unity.git?path=Assets
 4. Click **Add**
 5. In Unity, open the **Appwrite → Setup Assistant** menu and install the required dependencies
 ![](./.media/setup-assistant.png)
+
+Note: if you want to use the SDK compatible with Appwrite API 1.7.x, add the package using the following URL:
+
+```
+https://github.com/fellmonkey/sdk-appwrite-unity.git?path=Assets#last_1.7.x
+```
 ### Manual Installation
 
 1. Download the latest release from [GitHub](/releases) or zip

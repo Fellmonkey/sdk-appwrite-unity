@@ -55,7 +55,7 @@ public class CreateExecutionExample : MonoBehaviour
 - **body** *string* - HTTP body of execution. Default value is empty string. *(optional)*
 - **async** *boolean* - Execute code in the background. Default value is false. *(optional)*
 - **path** *string* - HTTP path of execution. Path can include query params. Default value is / *(optional)*
-- **method** *string* - HTTP method of execution. Default value is GET. *(optional)*
+- **method** *string* - HTTP method of execution. Default value is POST. *(optional)*
 - **headers** *object* - HTTP headers of execution. Defaults to empty. *(optional)*
 - **scheduledAt** *string* - Scheduled execution time in [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) format. DateTime value must be in future with precision in minutes. *(optional)*
 

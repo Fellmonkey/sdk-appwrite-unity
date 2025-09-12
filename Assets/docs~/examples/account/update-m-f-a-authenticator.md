@@ -1,15 +1,16 @@
-# UpdatePrefs
+# UpdateMFAAuthenticator
 
 ## Example
 
 ```csharp
 using Appwrite;
+using Appwrite.Enums;
 using Appwrite.Models;
 using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class UpdatePrefsExample : MonoBehaviour
+public class UpdateMFAAuthenticatorExample : MonoBehaviour
 {
     private Client client;
     private Account account;
@@ -22,19 +23,16 @@ public class UpdatePrefsExample : MonoBehaviour
 
         account = new Account(client);
 
-        await ExampleUpdatePrefs();
+        await ExampleUpdateMFAAuthenticator();
     }
     
-    async UniTask ExampleUpdatePrefs()
+    async UniTask ExampleUpdateMFAAuthenticator()
     {
         try
         {
-            User result = await account.UpdatePrefs(
-                prefs: new {
-        language = "en",
-        timezone = "UTC",
-        darkTheme = true
-    }
+            User result = await account.UpdateMFAAuthenticator(
+                type: AuthenticatorType.Totp,
+                otp: "<OTP>"
             );
             Debug.Log("Success: " + result);
         }
@@ -48,11 +46,12 @@ public class UpdatePrefsExample : MonoBehaviour
 
 ## Parameters
 
-- **prefs** *object* - Prefs key-value JSON object. *(required)* 
+- **type** *string* - Type of authenticator. *(required)* 
+- **otp** *string* - Valid verification token. *(required)* 
 
 ## Response
 
 Returns `User` object.
 ## More Info
 
-Update currently logged in user account preferences. The object you pass is stored as is, and replaces any previous value. The maximum allowed prefs size is 64kB and throws error if exceeded.
+Verify an authenticator app after adding it using the [add authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator) method.

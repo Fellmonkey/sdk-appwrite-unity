@@ -1,4 +1,4 @@
-# CreateDocument
+# CreateRow
 
 ## Example
 
@@ -9,10 +9,10 @@ using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class CreateDocumentExample : MonoBehaviour
+public class CreateRowExample : MonoBehaviour
 {
     private Client client;
-    private Databases databases;
+    private TablesDB tablesDB;
 
     async void Start()
     {
@@ -20,19 +20,19 @@ public class CreateDocumentExample : MonoBehaviour
             .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
             .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
 
-        databases = new Databases(client);
+        tablesDB = new TablesDB(client);
 
-        await ExampleCreateDocument();
+        await ExampleCreateRow();
     }
     
-    async UniTask ExampleCreateDocument()
+    async UniTask ExampleCreateRow()
     {
         try
         {
-            Document result = await databases.CreateDocument(
+            Row result = await tablesDB.CreateRow(
                 databaseId: "<DATABASE_ID>",
-                collectionId: "<COLLECTION_ID>",
-                documentId: "<DOCUMENT_ID>",
+                tableId: "<TABLE_ID>",
+                rowId: "<ROW_ID>",
                 data: new {
         username = "walter.obrien",
         email = "walter.obrien@example.com",
@@ -55,14 +55,14 @@ public class CreateDocumentExample : MonoBehaviour
 ## Parameters
 
 - **databaseId** *string* - Database ID. *(required)* 
-- **collectionId** *string* - Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection). Make sure to define attributes before creating documents. *(required)* 
-- **documentId** *string* - Document ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)* 
-- **data** *object* - Document data as JSON object. *(required)* 
+- **tableId** *string* - Table ID. You can create a new table using the Database service [server integration](https://appwrite.io/docs/server/tablesdb#tablesDBCreate). Make sure to define columns before creating rows. *(required)* 
+- **rowId** *string* - Row ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)* 
+- **data** *object* - Row data as JSON object. *(required)* 
 - **permissions** *array* - An array of permissions strings. By default, only the current user is granted all permissions. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
 
 ## Response
 
-Returns `Document` object.
+Returns `Row` object.
 ## More Info
 
-Create a new Document. Before using this route, you should create a new collection resource using either a [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection) API or directly from your database console.
+Create a new Row. Before using this route, you should create a new table resource using either a [server integration](https://appwrite.io/docs/server/tablesdb#tablesDBCreateTable) API or directly from your database console.

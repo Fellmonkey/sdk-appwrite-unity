@@ -1,4 +1,4 @@
-# UpdatePrefs
+# UpdateMFARecoveryCodes
 
 ## Example
 
@@ -9,7 +9,7 @@ using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class UpdatePrefsExample : MonoBehaviour
+public class UpdateMFARecoveryCodesExample : MonoBehaviour
 {
     private Client client;
     private Account account;
@@ -22,20 +22,15 @@ public class UpdatePrefsExample : MonoBehaviour
 
         account = new Account(client);
 
-        await ExampleUpdatePrefs();
+        await ExampleUpdateMFARecoveryCodes();
     }
     
-    async UniTask ExampleUpdatePrefs()
+    async UniTask ExampleUpdateMFARecoveryCodes()
     {
         try
         {
-            User result = await account.UpdatePrefs(
-                prefs: new {
-        language = "en",
-        timezone = "UTC",
-        darkTheme = true
-    }
-            );
+            MfaRecoveryCodes result = await account.UpdateMFARecoveryCodes();
+
             Debug.Log("Success: " + result);
         }
         catch (AppwriteException ex)
@@ -48,11 +43,10 @@ public class UpdatePrefsExample : MonoBehaviour
 
 ## Parameters
 
-- **prefs** *object* - Prefs key-value JSON object. *(required)* 
 
 ## Response
 
-Returns `User` object.
+Returns `MfaRecoveryCodes` object.
 ## More Info
 
-Update currently logged in user account preferences. The object you pass is stored as is, and replaces any previous value. The maximum allowed prefs size is 64kB and throws error if exceeded.
+Regenerate recovery codes that can be used as backup for MFA flow. Before regenerating codes, they must be first generated using [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes) method. An OTP challenge is required to regenreate recovery codes.

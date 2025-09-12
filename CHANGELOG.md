@@ -1,5 +1,11 @@
 # Change Log
 
+## 2.0.0
+* Support version api 1.8.x
+* Introduces the `TablesDB` service with support for row operations, including new `Row` and `RowList` models.
+* Adds new MFA-related methods to the `Account` service and deprecates older ones; updates documentation with usage examples.
+* Adds the `HEAD` method to the `ExecutionMethod` enum and updates the `Execution` model to include `deploymentId`.
+
 ## 1.2.0
 Last version for api 1.7.x
 * Introduces new spatial and range query methods (e.g., `CreatedBetween`, `UpdatedBetween`, `DistanceEqual`, `Intersects`, etc.) to the `Query` class.

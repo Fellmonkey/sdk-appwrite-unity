@@ -19,6 +19,7 @@ namespace Appwrite.Services
         /// the query params to filter your results.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.listRows` instead.")]
         public UniTask<Models.DocumentList> ListDocuments(string databaseId, string collectionId, List<string>? queries = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents"
@@ -54,6 +55,7 @@ namespace Appwrite.Services
         /// API or directly from your database console.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.createRow` instead.")]
         public UniTask<Models.Document> CreateDocument(string databaseId, string collectionId, string documentId, object data, List<string>? permissions = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents"
@@ -90,6 +92,7 @@ namespace Appwrite.Services
         /// object with the document data.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.getRow` instead.")]
         public UniTask<Models.Document> GetDocument(string databaseId, string collectionId, string documentId, List<string>? queries = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
@@ -126,6 +129,7 @@ namespace Appwrite.Services
         /// API or directly from your database console.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.upsertRow` instead.")]
         public UniTask<Models.Document> UpsertDocument(string databaseId, string collectionId, string documentId, object data, List<string>? permissions = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
@@ -162,6 +166,7 @@ namespace Appwrite.Services
         /// only specific fields that will get updated.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.updateRow` instead.")]
         public UniTask<Models.Document> UpdateDocument(string databaseId, string collectionId, string documentId, object? data = null, List<string>? permissions = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
@@ -197,6 +202,7 @@ namespace Appwrite.Services
         /// Delete a document by its unique ID.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.deleteRow` instead.")]
         public UniTask<object> DeleteDocument(string databaseId, string collectionId, string documentId)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
@@ -227,6 +233,7 @@ namespace Appwrite.Services
         /// Decrement a specific attribute of a document by a given value.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.decrementRowColumn` instead.")]
         public UniTask<Models.Document> DecrementDocumentAttribute(string databaseId, string collectionId, string documentId, string attribute, double? xvalue = null, double? min = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/decrement"
@@ -263,6 +270,7 @@ namespace Appwrite.Services
         /// Increment a specific attribute of a document by a given value.
         /// </para>
         /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.incrementRowColumn` instead.")]
         public UniTask<Models.Document> IncrementDocumentAttribute(string databaseId, string collectionId, string documentId, string attribute, double? xvalue = null, double? max = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/increment"

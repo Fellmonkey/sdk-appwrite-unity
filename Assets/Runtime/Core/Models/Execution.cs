@@ -23,6 +23,9 @@ namespace Appwrite.Models
         [JsonPropertyName("functionId")]
         public string FunctionId { get; private set; }
 
+        [JsonPropertyName("deploymentId")]
+        public string DeploymentId { get; private set; }
+
         [JsonPropertyName("trigger")]
         public string Trigger { get; private set; }
 
@@ -65,6 +68,7 @@ namespace Appwrite.Models
             string updatedAt,
             List<string> permissions,
             string functionId,
+            string deploymentId,
             string trigger,
             string status,
             string requestMethod,
@@ -83,6 +87,7 @@ namespace Appwrite.Models
             UpdatedAt = updatedAt;
             Permissions = permissions;
             FunctionId = functionId;
+            DeploymentId = deploymentId;
             Trigger = trigger;
             Status = status;
             RequestMethod = requestMethod;
@@ -103,6 +108,7 @@ namespace Appwrite.Models
             updatedAt: map["$updatedAt"].ToString(),
             permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
             functionId: map["functionId"].ToString(),
+            deploymentId: map["deploymentId"].ToString(),
             trigger: map["trigger"].ToString(),
             status: map["status"].ToString(),
             requestMethod: map["requestMethod"].ToString(),
@@ -124,6 +130,7 @@ namespace Appwrite.Models
             { "$updatedAt", UpdatedAt },
             { "$permissions", Permissions },
             { "functionId", FunctionId },
+            { "deploymentId", DeploymentId },
             { "trigger", Trigger },
             { "status", Status },
             { "requestMethod", RequestMethod },

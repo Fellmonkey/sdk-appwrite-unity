@@ -53,7 +53,7 @@ public class DecrementDocumentAttributeExample : MonoBehaviour
 - **collectionId** *string* - Collection ID. *(required)* 
 - **documentId** *string* - Document ID. *(required)* 
 - **attribute** *string* - Attribute key. *(required)* 
-- **value** *number* - Value to decrement the attribute by. The value must be a number. *(optional)*
+- **value** *number* - Value to increment the attribute by. The value must be a number. *(optional)*
 - **min** *number* - Minimum value for the attribute. If the current value is lesser than this value, an exception will be thrown. *(optional)*
 
 ## Response

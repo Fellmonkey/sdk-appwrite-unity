@@ -1,4 +1,4 @@
-# UpdatePrefs
+# UpdateMFAChallenge
 
 ## Example
 
@@ -9,7 +9,7 @@ using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-public class UpdatePrefsExample : MonoBehaviour
+public class UpdateMFAChallengeExample : MonoBehaviour
 {
     private Client client;
     private Account account;
@@ -22,19 +22,16 @@ public class UpdatePrefsExample : MonoBehaviour
 
         account = new Account(client);
 
-        await ExampleUpdatePrefs();
+        await ExampleUpdateMFAChallenge();
     }
     
-    async UniTask ExampleUpdatePrefs()
+    async UniTask ExampleUpdateMFAChallenge()
     {
         try
         {
-            User result = await account.UpdatePrefs(
-                prefs: new {
-        language = "en",
-        timezone = "UTC",
-        darkTheme = true
-    }
+            Session result = await account.UpdateMFAChallenge(
+                challengeId: "<CHALLENGE_ID>",
+                otp: "<OTP>"
             );
             Debug.Log("Success: " + result);
         }
@@ -48,11 +45,12 @@ public class UpdatePrefsExample : MonoBehaviour
 
 ## Parameters
 
-- **prefs** *object* - Prefs key-value JSON object. *(required)* 
+- **challengeId** *string* - ID of the challenge. *(required)* 
+- **otp** *string* - Valid verification token. *(required)* 
 
 ## Response
 
-Returns `User` object.
+Returns `Session` object.
 ## More Info
 
-Update currently logged in user account preferences. The object you pass is stored as is, and replaces any previous value. The maximum allowed prefs size is 64kB and throws error if exceeded.
+Complete the MFA challenge by providing the one-time password. Finish the process of MFA verification by providing the one-time password. To begin the flow, use [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge) method.
