@@ -1,5 +1,14 @@
 # Change Log
 
+## 1.1.0
+* Refactored the `AppwriteSetupAssistant` and `AppwriteSetupWindow` to provide more reliable, asynchronous package installation and status refresh, with improved UI feedback and error handling.
+  - The setup assistant now prevents concurrent operations and supports callbacks for install completion.
+  - The setup window disables UI during asynchronous operations to prevent user interaction while installing.
+* Updated `WebAuthComponent` to require `UNI_TASK`.
+* Removed the experimental warning from `Databases.cs` and related documentation.
+* Updated `AppwriteUtilities` to pass `true` to `Initialize`.
+* Updated Unity package versions in the lock file and project version metadata.
+
 ## 1.0.0
 * Introduced `WebAuthComponent` for handling OAuth2 authentication via deep links on Unity Editor, iOS, Android, and WebGL
 * Added platform-specific cookie management
