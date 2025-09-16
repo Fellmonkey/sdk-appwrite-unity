@@ -1,6 +1,6 @@
 # Unofficial [Appwrite](https://github.com/appwrite/appwrite) Unity SDK
 
-![Version](https://img.shields.io/badge/api%20version-1.7.4-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-1.8.0-blue.svg?style=flat-square)
 ![Unity](https://img.shields.io/badge/Unity-2021.3+-blue.svg)
 ![License](https://img.shields.io/github/license/fellmonkey/sdk-appwrite-unity.svg?style=flat-square)
 
