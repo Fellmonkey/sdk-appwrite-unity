@@ -120,7 +120,7 @@ namespace Appwrite.Models
             logs: map["logs"].ToString(),
             errors: map["errors"].ToString(),
             duration: Convert.ToDouble(map["duration"]),
-            scheduledAt: map.ContainsKey("scheduledAt") ? map["scheduledAt"]?.ToString() : null
+            scheduledAt: map.TryGetValue("scheduledAt", out var v17) ? v17?.ToString() : null
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

@@ -1,5 +1,12 @@
 # Change Log
 
+## 2.1.0
+- Added
+  - Added a new query helper: `Query.OrderRandom()` to request randomized ordering when building queries.
+
+- Chore / Style
+  - Normalized end-of-file newlines and minor formatting fixes across multiple model files in `Assets/Runtime/Core/Models/`.
+
 ## 2.0.0
 * Support version api 1.8.x
 * Introduces the `TablesDB` service with support for row operations, including new `Row` and `RowList` models.
