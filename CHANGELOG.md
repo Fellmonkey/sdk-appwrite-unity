@@ -1,5 +1,18 @@
 # Change Log
 
+## 2.2.0
+- Added
+  - New enums: `ExecutionStatus` and `ExecutionTrigger` to better model execution lifecycle values.
+
+- Changed
+  - `Execution` model updated to use `ExecutionTrigger` and `ExecutionStatus` types instead of raw strings. Serialization now writes enum `.Value` back to maps.
+  - Several models now consistently convert JSON arrays to lists using `.Select(x => x.ToString()).ToList()` to avoid nullable conversions and simplify deserialization (examples: `permissions`, `roles`, `factors`, `labels`).
+  - `Document`, `Row`, and `Preferences` models now use `map.TryGetValue("data", out var dataValue)` for optional `data` payloads and fall back to the full map when `data` is missing.
+
+- Fixed / Chore
+  - Removed unused `using Appwrite.Enums;` imports from multiple service files to reduce warnings and improve clarity.
+  - Minor whitespace and EOF newline normalizations across converters, enums and models.
+
 ## 2.1.0
 - Added
   - Added a new query helper: `Query.OrderRandom()` to request randomized ordering when building queries.

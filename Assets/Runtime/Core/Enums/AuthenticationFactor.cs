@@ -8,7 +8,7 @@ namespace Appwrite.Enums
 
         public AuthenticationFactor(string value)
         {
-            Value = value;
+            Value = value; 
         }
 
         public static AuthenticationFactor Email => new AuthenticationFactor("email");

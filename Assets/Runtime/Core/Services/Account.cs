@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using Appwrite.Models;
-using Appwrite.Enums;
 using Appwrite.Extensions;
 using System.Web;
 using UnityEngine;

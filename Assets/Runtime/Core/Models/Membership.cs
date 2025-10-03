@@ -90,7 +90,7 @@ namespace Appwrite.Models
             joined: map["joined"].ToString(),
             confirm: (bool)map["confirm"],
             mfa: (bool)map["mfa"],
-            roles: ((IEnumerable<object>)map["roles"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!
+            roles: ((IEnumerable<object>)map["roles"]).Select(x => x.ToString()).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

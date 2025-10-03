@@ -58,8 +58,8 @@ namespace Appwrite.Models
             databaseId: map["$databaseId"].ToString(),
             createdAt: map["$createdAt"].ToString(),
             updatedAt: map["$updatedAt"].ToString(),
-            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
-            data: map
+            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x.ToString()).ToList(),
+            data: map.TryGetValue("data", out var dataValue) ? (Dictionary<string, object>)dataValue : map
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

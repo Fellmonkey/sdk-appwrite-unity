@@ -18,7 +18,7 @@ namespace Appwrite.Models
         }
 
         public static MfaRecoveryCodes From(Dictionary<string, object> map) => new MfaRecoveryCodes(
-            recoveryCodes: ((IEnumerable<object>)map["recoveryCodes"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!
+            recoveryCodes: ((IEnumerable<object>)map["recoveryCodes"]).Select(x => x.ToString()).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

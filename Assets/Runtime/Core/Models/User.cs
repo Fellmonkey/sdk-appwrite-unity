@@ -117,7 +117,7 @@ namespace Appwrite.Models
             hashOptions: map.TryGetValue("hashOptions", out var v6) ? v6?.ToString() : null,
             registration: map["registration"].ToString(),
             status: (bool)map["status"],
-            labels: ((IEnumerable<object>)map["labels"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
+            labels: ((IEnumerable<object>)map["labels"]).Select(x => x.ToString()).ToList(),
             passwordUpdate: map["passwordUpdate"].ToString(),
             email: map["email"].ToString(),
             phone: map["phone"].ToString(),

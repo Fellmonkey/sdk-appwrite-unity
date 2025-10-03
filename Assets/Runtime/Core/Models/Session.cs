@@ -184,7 +184,7 @@ namespace Appwrite.Models
             countryCode: map["countryCode"].ToString(),
             countryName: map["countryName"].ToString(),
             current: (bool)map["current"],
-            factors: ((IEnumerable<object>)map["factors"]).Select(x => x?.ToString()).Where(x => x != null).ToList()!,
+            factors: ((IEnumerable<object>)map["factors"]).Select(x => x.ToString()).ToList(),
             secret: map["secret"].ToString(),
             mfaUpdatedAt: map["mfaUpdatedAt"].ToString()
         );
