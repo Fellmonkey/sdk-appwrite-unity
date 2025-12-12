@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -117,7 +118,7 @@ namespace Appwrite.Models
             hashOptions: map.TryGetValue("hashOptions", out var v6) ? v6?.ToString() : null,
             registration: map["registration"].ToString(),
             status: (bool)map["status"],
-            labels: ((IEnumerable<object>)map["labels"]).Select(x => x.ToString()).ToList(),
+            labels: map["labels"].ToEnumerable().Select(x => x.ToString()).ToList(),
             passwordUpdate: map["passwordUpdate"].ToString(),
             email: map["email"].ToString(),
             phone: map["phone"].ToString(),
@@ -125,7 +126,7 @@ namespace Appwrite.Models
             phoneVerification: (bool)map["phoneVerification"],
             mfa: (bool)map["mfa"],
             prefs: Preferences.From(map: (Dictionary<string, object>)map["prefs"]),
-            targets: ((IEnumerable<object>)map["targets"]).Select(it => Target.From(map: (Dictionary<string, object>)it)).ToList(),
+            targets: map["targets"].ToEnumerable().Select(it => Target.From(map: (Dictionary<string, object>)it)).ToList(),
             accessedAt: map["accessedAt"].ToString()
         );
 

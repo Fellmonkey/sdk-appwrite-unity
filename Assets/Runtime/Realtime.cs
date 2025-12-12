@@ -101,6 +101,7 @@ namespace Appwrite
         private bool _creatingSocket;
         private string _lastUrl;
         private CancellationTokenSource _heartbeatTokenSource;
+        private string _lastSession;
         public HashSet<string> Channels => _channels;
 
         public bool IsConnected => _webSocket?.State == WebSocketState.Open;
@@ -111,6 +112,36 @@ namespace Appwrite
         public void Initialize(Client client)
         {
             _client = client;
+            _lastSession = _client.GetSession();
+        }
+        
+        /// <summary>
+        /// Update the client reference (used when client is reinitialized)
+        /// </summary>
+        public void UpdateClient(Client client)
+        {
+            _client = client;
+            var newSession = _client.GetSession();
+            
+            // If session changed and we're connected, re-authenticate
+            if (_lastSession != newSession && IsConnected)
+            {
+                _lastSession = newSession;
+                SendFallbackAuthentication();
+            }
+        }
+        
+        /// <summary>
+        /// Notify realtime that session has changed and re-authentication may be needed
+        /// </summary>
+        public void OnSessionChanged()
+        {
+            var newSession = _client?.GetSession();
+            if (_lastSession != newSession && IsConnected)
+            {
+                _lastSession = newSession;
+                SendFallbackAuthentication();
+            }
         }
 
         private void Update()
@@ -126,7 +157,7 @@ namespace Appwrite
         public RealtimeSubscription Subscribe(string[] channels, Action<RealtimeResponseEvent<Dictionary<string, object>>> callback)
         {
             Debug.Log($"[Realtime] Subscribe called for channels: [{string.Join(", ", channels)}]");
-            
+
             var subscriptionId = ++_subscriptionCounter;
             var subscription = new RealtimeSubscription
             {
@@ -136,17 +167,16 @@ namespace Appwrite
             };
 
             _subscriptions[subscriptionId] = subscription;
-            
+
             // Add channels to the set
             foreach (var channel in channels)
             {
                 _channels.Add(channel);
             }
-            
+
+            // Ensure reconnect is enabled when subscribing
+            _reconnect = true;
             CreateSocket().Forget();
-
-            
-
 
             return subscription;
         }
@@ -172,7 +202,8 @@ namespace Appwrite
             }
             else
             {
-                CloseConnection().Forget();
+                // No more subscriptions, close and disable reconnect
+                CloseConnection(allowReconnect: false).Forget();
             }
         }
         
@@ -441,8 +472,9 @@ namespace Appwrite
             return $"{baseUrl}{realtimePath}?project={Uri.EscapeDataString(project)}&{channelParams}";
         }
 
-        private async UniTask CloseConnection()
+        private async UniTask CloseConnection(bool allowReconnect = true)
         {
+            var previousReconnect = _reconnect;
             _reconnect = false;
             StopHeartbeat();
             _cancellationTokenSource?.Cancel();
@@ -453,11 +485,26 @@ namespace Appwrite
             }
             
             _reconnectAttempts = 0;
+            
+            // Restore reconnect flag if we want to allow future reconnects
+            if (allowReconnect)
+            {
+                _reconnect = previousReconnect;
+            }
         }
 
         public async UniTask Disconnect()
         {
-            await CloseConnection();
+            // Disconnect permanently - don't allow auto-reconnect
+            await CloseConnection(allowReconnect: false);
+        }
+        
+        /// <summary>
+        /// Reconnect after a manual disconnect
+        /// </summary>
+        public void EnableReconnect()
+        {
+            _reconnect = true;
         }
         
         private void OnDestroy()

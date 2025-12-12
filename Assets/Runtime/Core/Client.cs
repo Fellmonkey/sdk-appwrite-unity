@@ -69,21 +69,18 @@ namespace Appwrite
             _headers = new Dictionary<string, string>()
             {
                 { "content-type", "application/json" },
-                { "user-agent" , $"AppwriteUnitySDK/0.0.1 ({Environment.OSVersion.Platform}; {Environment.OSVersion.VersionString})"},
+                { "user-agent" , $"AppwriteUnitySDK/2.2.0 ({Environment.OSVersion.Platform}; {Environment.OSVersion.VersionString})"},
                 { "x-sdk-name", "NAME" },
                 { "x-sdk-platform", "" },
                 { "x-sdk-language", "unity" },
-                { "x-sdk-version", "0.0.1"},
-                { "X-Appwrite-Response-Format", "1.6.0" }
+                { "x-sdk-version", "2.2.0"},
+                { "X-Appwrite-Response-Format", "1.8.0" }
             };
 
             _config = new Dictionary<string, string>();
-            // Load persistent data (non-WebGL only for cookies)
+            // Load persistent data (session and JWT)
             LoadSession();
-#if !(UNITY_WEBGL && !UNITY_EDITOR)
-            _cookieContainer.LoadCookies();
-#endif
-
+            // Note: CookieContainer handles its own loading in constructor based on platform
         }
 
         public Client SetSelfSigned(bool selfSigned)

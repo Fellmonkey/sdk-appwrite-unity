@@ -1,5 +1,19 @@
 # Change Log
 
+## 2.3.0
+- Added
+  - New enums: `Output`, `Theme`, and `Timezone` to support additional API features.
+
+- Changed
+  - Improved thread safety in `CookieContainer` by adding locks around cookie operations to prevent race conditions.
+  - Replaced null checks with `ReferenceEquals(null, ...)` in `AppwriteManager` for more robust null handling.
+  - Replaced reflection-based service instantiation with direct instantiation in `AppwriteManager` for better performance and AOT compatibility.
+
+- Fixed / Chore
+  - Added `Scheduled` status to `ExecutionStatus` enum.
+  - Minor formatting and whitespace fixes in `AuthenticationFactor.cs` and other files.
+  - Normalized end-of-file newlines across multiple files.
+
 ## 2.2.0
 - Added
   - New enums: `ExecutionStatus` and `ExecutionTrigger` to better model execution lifecycle values.

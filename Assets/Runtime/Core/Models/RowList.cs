@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -24,7 +25,7 @@ namespace Appwrite.Models
 
         public static RowList From(Dictionary<string, object> map) => new RowList(
             total: Convert.ToInt64(map["total"]),
-            rows: ((IEnumerable<object>)map["rows"]).Select(it => Row.From(map: (Dictionary<string, object>)it)).ToList()
+            rows: map["rows"].ToEnumerable().Select(it => Row.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

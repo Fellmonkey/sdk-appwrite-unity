@@ -128,13 +128,14 @@ namespace Appwrite.Services
         /// Get the list of identities for the currently logged in user.
         /// </para>
         /// </summary>
-        public UniTask<Models.IdentityList> ListIdentities(List<string>? queries = null)
+        public UniTask<Models.IdentityList> ListIdentities(List<string>? queries = null, bool? total = null)
         {
             var apiPath = "/account/identities";
 
             var apiParameters = new Dictionary<string, object?>()
             {
-                { "queries", queries }
+                { "queries", queries },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -221,13 +222,14 @@ namespace Appwrite.Services
         /// user. Each log returns user IP address, location and date and time of log.
         /// </para>
         /// </summary>
-        public UniTask<Models.LogList> ListLogs(List<string>? queries = null)
+        public UniTask<Models.LogList> ListLogs(List<string>? queries = null, bool? total = null)
         {
             var apiPath = "/account/logs";
 
             var apiParameters = new Dictionary<string, object?>()
             {
-                { "queries", queries }
+                { "queries", queries },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -482,7 +484,7 @@ namespace Appwrite.Services
         [Obsolete("This API has been deprecated since 1.8.0. Please use `Account.createMFAChallenge` instead.")]
         public UniTask<Models.MfaChallenge> CreateMfaChallenge(Appwrite.Enums.AuthenticationFactor factor)
         {
-            var apiPath = "/account/mfa/challenge";
+            var apiPath = "/account/mfa/challenges";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -515,7 +517,7 @@ namespace Appwrite.Services
         /// </summary>
         public UniTask<Models.MfaChallenge> CreateMFAChallenge(Appwrite.Enums.AuthenticationFactor factor)
         {
-            var apiPath = "/account/mfa/challenge";
+            var apiPath = "/account/mfa/challenges";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -551,7 +553,7 @@ namespace Appwrite.Services
         [Obsolete("This API has been deprecated since 1.8.0. Please use `Account.updateMFAChallenge` instead.")]
         public UniTask<Models.Session> UpdateMfaChallenge(string challengeId, string otp)
         {
-            var apiPath = "/account/mfa/challenge";
+            var apiPath = "/account/mfa/challenges";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -587,7 +589,7 @@ namespace Appwrite.Services
         /// </summary>
         public UniTask<Models.Session> UpdateMFAChallenge(string challengeId, string otp)
         {
-            var apiPath = "/account/mfa/challenge";
+            var apiPath = "/account/mfa/challenges";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -1330,24 +1332,20 @@ namespace Appwrite.Services
             var callbackUri = await WebAuthComponent.Authenticate(authUrl);
             
             var query = HttpUtility.ParseQueryString(callbackUri.Query);
-            var secret = query.Get("secret");
-            var key = query.Get("key");
+            var cookie = query.Get("cookie");
             var callbackDomain = query.Get("domain"); // Get domain from callback
 
-            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(cookie))
             {
                 var error = query.Get("error") ?? "Unknown error";
-                throw new AppwriteException($"Failed to get authentication credentials from callback. Error: {error}");
+                throw new AppwriteException($"Failed to get authentication cookie from callback. Error: {error}");
             }
 
             // Use domain from callback if available, otherwise fallback to endpoint host
             var domain = !string.IsNullOrEmpty(callbackDomain) ? callbackDomain : new Uri(_client.Endpoint).Host;
             var parsedDomain = domain.StartsWith(".") ? domain.Substring(1) : domain;
-            // Create a Set-Cookie header format and parse it
-            // This ensures consistent cookie processing with server responses
-            var setCookieHeader = $"{key}={secret}; Path=/; Domain={parsedDomain}; Secure; HttpOnly; Max-Age={30 * 24 * 60 * 60}";
             Debug.Log($"Setting session cookie for domain: {parsedDomain}");
-            _client.CookieContainer.ParseSetCookieHeader(setCookieHeader, parsedDomain);
+            _client.CookieContainer.ParseSetCookieHeader(cookie, parsedDomain);
 
 #if UNITY_EDITOR
             Debug.LogWarning("[Appwrite] OAuth authorization in Editor: you can open and authorize, but cookies cannot be obtained. The session will not be set.");
@@ -1799,24 +1797,20 @@ namespace Appwrite.Services
             var callbackUri = await WebAuthComponent.Authenticate(authUrl);
             
             var query = HttpUtility.ParseQueryString(callbackUri.Query);
-            var secret = query.Get("secret");
-            var key = query.Get("key");
+            var cookie = query.Get("cookie");
             var callbackDomain = query.Get("domain"); // Get domain from callback
 
-            if (string.IsNullOrEmpty(secret) || string.IsNullOrEmpty(key))
+            if (string.IsNullOrEmpty(cookie))
             {
                 var error = query.Get("error") ?? "Unknown error";
-                throw new AppwriteException($"Failed to get authentication credentials from callback. Error: {error}");
+                throw new AppwriteException($"Failed to get authentication cookie from callback. Error: {error}");
             }
 
             // Use domain from callback if available, otherwise fallback to endpoint host
             var domain = !string.IsNullOrEmpty(callbackDomain) ? callbackDomain : new Uri(_client.Endpoint).Host;
             var parsedDomain = domain.StartsWith(".") ? domain.Substring(1) : domain;
-            // Create a Set-Cookie header format and parse it
-            // This ensures consistent cookie processing with server responses
-            var setCookieHeader = $"{key}={secret}; Path=/; Domain={parsedDomain}; Secure; HttpOnly; Max-Age={30 * 24 * 60 * 60}";
             Debug.Log($"Setting session cookie for domain: {parsedDomain}");
-            _client.CookieContainer.ParseSetCookieHeader(setCookieHeader, parsedDomain);
+            _client.CookieContainer.ParseSetCookieHeader(cookie, parsedDomain);
 
 #if UNITY_EDITOR
             Debug.LogWarning("[Appwrite] OAuth authorization in Editor: you can open and authorize, but cookies cannot be obtained. The session will not be set.");
@@ -1889,9 +1883,55 @@ namespace Appwrite.Services
         /// 
         /// </para>
         /// </summary>
+        public UniTask<Models.Token> CreateEmailVerification(string url)
+        {
+            var apiPath = "/account/verifications/email";
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+                { "url", url }
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+                { "content-type", "application/json" }
+            };
+
+
+            static Models.Token Convert(Dictionary<string, object> it) =>
+                Models.Token.From(map: it);
+
+            return _client.Call<Models.Token>(
+                method: "POST",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
+        /// Use this endpoint to send a verification message to your user email address
+        /// to confirm they are the valid owners of that address. Both the **userId**
+        /// and **secret** arguments will be passed as query parameters to the URL you
+        /// have provided to be attached to the verification email. The provided URL
+        /// should redirect the user back to your app and allow you to complete the
+        /// verification process by verifying both the **userId** and **secret**
+        /// parameters. Learn more about how to [complete the verification
+        /// process](https://appwrite.io/docs/references/cloud/client-web/account#updateVerification).
+        /// The verification link sent to the user's email address is valid for 7 days.
+        /// 
+        /// Please note that in order to avoid a [Redirect
+        /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md),
+        /// the only valid redirect URLs are the ones from domains you have set when
+        /// adding your platforms in the console interface.
+        /// 
+        /// </para>
+        /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `Account.createEmailVerification` instead.")]
         public UniTask<Models.Token> CreateVerification(string url)
         {
-            var apiPath = "/account/verification";
+            var apiPath = "/account/verifications/email";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -1923,9 +1963,45 @@ namespace Appwrite.Services
         /// 200 status code.
         /// </para>
         /// </summary>
+        public UniTask<Models.Token> UpdateEmailVerification(string userId, string secret)
+        {
+            var apiPath = "/account/verifications/email";
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+                { "userId", userId },
+                { "secret", secret }
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+                { "content-type", "application/json" }
+            };
+
+
+            static Models.Token Convert(Dictionary<string, object> it) =>
+                Models.Token.From(map: it);
+
+            return _client.Call<Models.Token>(
+                method: "PUT",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
+        /// Use this endpoint to complete the user email verification process. Use both
+        /// the **userId** and **secret** parameters that were attached to your app URL
+        /// to verify the user email ownership. If confirmed this route will return a
+        /// 200 status code.
+        /// </para>
+        /// </summary>
+        [Obsolete("This API has been deprecated since 1.8.0. Please use `Account.updateEmailVerification` instead.")]
         public UniTask<Models.Token> UpdateVerification(string userId, string secret)
         {
-            var apiPath = "/account/verification";
+            var apiPath = "/account/verifications/email";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -1964,7 +2040,7 @@ namespace Appwrite.Services
         /// </summary>
         public UniTask<Models.Token> CreatePhoneVerification()
         {
-            var apiPath = "/account/verification/phone";
+            var apiPath = "/account/verifications/phone";
 
             var apiParameters = new Dictionary<string, object?>()
             {
@@ -1997,7 +2073,7 @@ namespace Appwrite.Services
         /// </summary>
         public UniTask<Models.Token> UpdatePhoneVerification(string userId, string secret)
         {
-            var apiPath = "/account/verification/phone";
+            var apiPath = "/account/verifications/phone";
 
             var apiParameters = new Dictionary<string, object?>()
             {

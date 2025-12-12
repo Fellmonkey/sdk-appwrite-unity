@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace Appwrite.Extensions
@@ -10,6 +11,17 @@ namespace Appwrite.Extensions
         public static string ToJson(this Dictionary<string, object?> dict)
         {
             return JsonSerializer.Serialize(dict, Client.SerializerOptions);
+        }
+
+        public static IEnumerable<object> ToEnumerable(this object value)
+        {
+            return value switch
+            {
+                object[] array => array,
+                IEnumerable<object> enumerable => enumerable,
+                IEnumerable nonGeneric => nonGeneric.Cast<object>(),
+                _ => throw new InvalidCastException($"Cannot convert {value?.GetType().Name ?? "null"} to IEnumerable<object>")
+            };
         }
 
         public static string ToQueryString(this Dictionary<string, object?> parameters)

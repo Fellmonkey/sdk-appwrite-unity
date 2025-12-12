@@ -34,7 +34,8 @@ public class UpdateRowExample : MonoBehaviour
                 tableId: "<TABLE_ID>",
                 rowId: "<ROW_ID>",
                 data: [object], // optional
-                permissions: ["read("any")"] // optional
+                permissions: new List<string> { Permission.Read(Role.Any()) }, // optional
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -53,6 +54,7 @@ public class UpdateRowExample : MonoBehaviour
 - **rowId** *string* - Row ID. *(required)* 
 - **data** *object* - Row data as JSON object. Include only columns and value pairs to be updated. *(optional)*
 - **permissions** *array* - An array of permissions strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 

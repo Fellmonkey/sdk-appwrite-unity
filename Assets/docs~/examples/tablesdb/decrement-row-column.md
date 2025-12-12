@@ -35,7 +35,8 @@ public class DecrementRowColumnExample : MonoBehaviour
                 rowId: "<ROW_ID>",
                 column: "",
                 value: 0, // optional
-                min: 0 // optional
+                min: 0, // optional
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -55,6 +56,7 @@ public class DecrementRowColumnExample : MonoBehaviour
 - **column** *string* - Column key. *(required)* 
 - **value** *number* - Value to increment the column by. The value must be a number. *(optional)*
 - **min** *number* - Minimum value for the column. If the current value is lesser than this value, an exception will be thrown. *(optional)*
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 

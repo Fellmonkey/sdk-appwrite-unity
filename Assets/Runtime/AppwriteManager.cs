@@ -1,7 +1,6 @@
 #if UNI_TASK
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Appwrite.Services;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -46,7 +45,7 @@ namespace Appwrite
         { 
             get 
             { 
-                if (!_realtime)
+                if (ReferenceEquals(_realtime, null))
                     Debug.LogWarning("Realtime was not initialized. Call Initialize(true) to enable it.");
                 return _realtime; 
             } 
@@ -57,13 +56,13 @@ namespace Appwrite
 
         private void Awake()
         {
-            if (!Instance)
+            if (ReferenceEquals(Instance, null))
             {
                 Instance = this;
                 if (dontDestroyOnLoad)
                     DontDestroyOnLoad(gameObject);
             }
-            else if (Instance != this)
+            else if (!ReferenceEquals(Instance, this))
             {
                 Debug.LogWarning("Multiple AppwriteManager instances detected. Destroying duplicate.");
                 Destroy(gameObject);
@@ -133,47 +132,51 @@ namespace Appwrite
         {
             _services.Clear();
             var servicesToInit = config.ServicesToInitialize;
-            var serviceNamespace = typeof(Account).Namespace; // Assumes all services are in the same namespace.
-
-            var createServiceMethodInfo = GetType().GetMethod(nameof(CreateService), BindingFlags.NonPublic | BindingFlags.Instance);
-            if (createServiceMethodInfo == null)
-            {
-                Debug.LogError("Critical error: CreateService method not found via reflection.");
-                return;
-            }
-
-            foreach (AppwriteService serviceEnum in Enum.GetValues(typeof(AppwriteService)))
-            {
-                if (serviceEnum is AppwriteService.None or AppwriteService.All or AppwriteService.Main or AppwriteService.Others) continue;
-
-                if (!servicesToInit.HasFlag(serviceEnum)) continue;
-                
-                var typeName = $"{serviceNamespace}.{serviceEnum}, {typeof(Account).Assembly.GetName().Name}";
-                var serviceType = Type.GetType(typeName);
-
-                if (serviceType != null)
-                {
-                    var genericMethod = createServiceMethodInfo.MakeGenericMethod(serviceType);
-                    genericMethod.Invoke(this, null);
-                }
-                else
-                {
-                    Debug.LogWarning($"Could not find class for service '{typeName}'. Make sure the enum name matches the class name.");
-                }
-            }
+            
+            // Direct service instantiation - no reflection needed for known service types
+            // This is more performant and AOT-friendly than generic reflection
+            
+            if (servicesToInit.HasFlag(AppwriteService.Account))
+                TryCreateService<Account>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Databases))
+                TryCreateService<Databases>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Functions))
+                TryCreateService<Functions>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Storage))
+                TryCreateService<Storage>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Avatars))
+                TryCreateService<Avatars>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Graphql))
+                TryCreateService<Graphql>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Locale))
+                TryCreateService<Locale>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Messaging))
+                TryCreateService<Messaging>();
+            
+            if (servicesToInit.HasFlag(AppwriteService.Teams))
+                TryCreateService<Teams>();
         }
-
-        private void CreateService<T>() where T : class
+        
+        /// <summary>
+        /// Try to create and register a service instance.
+        /// </summary>
+        private void TryCreateService<T>() where T : Service
         {
-            var type = typeof(T);
-            var constructor = type.GetConstructor(new[] { typeof(Client) });
-            if (constructor != null)
+            try
             {
-                _services.Add(type, constructor.Invoke(new object[] { _client }));
+                var service = (T)Activator.CreateInstance(typeof(T), _client);
+                _services[typeof(T)] = service;
             }
-            else
+            catch (Exception ex)
             {
-                Debug.LogError($"Could not find a constructor for {type.Name} that accepts a Client object.");
+                Debug.LogError($"Failed to create service {typeof(T).Name}: {ex.Message}");
             }
         }
         
@@ -181,13 +184,17 @@ namespace Appwrite
         {
             if (_client == null)
                 throw new InvalidOperationException("Client must be initialized before realtime");
-                
-            if (!_realtime)
+            if (ReferenceEquals(_realtime, null))
             {
                 var realtimeGo = new GameObject("AppwriteRealtime");
                 realtimeGo.transform.SetParent(transform);
                 _realtime = realtimeGo.AddComponent<Realtime>();
                 _realtime.Initialize(_client);
+            }
+            else
+            {
+                // Update existing realtime with new client reference
+                _realtime.UpdateClient(_client);
             }
         }
         
@@ -246,9 +253,12 @@ namespace Appwrite
         
         private void Shutdown()
         {
-            _realtime?.Disconnect().Forget();
-            if (_realtime?.gameObject != null)
-                Destroy(_realtime.gameObject);
+            if (!ReferenceEquals(_realtime, null))
+            {
+                _realtime.Disconnect().Forget();
+                if (_realtime.gameObject != null)
+                    Destroy(_realtime.gameObject);
+            }
             _realtime = null;
             _client = null;
             _isInitialized = false;

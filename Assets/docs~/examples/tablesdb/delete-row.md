@@ -32,7 +32,8 @@ public class DeleteRowExample : MonoBehaviour
 await tablesDB.DeleteRow(
                 databaseId: "<DATABASE_ID>",
                 tableId: "<TABLE_ID>",
-                rowId: "<ROW_ID>"
+                rowId: "<ROW_ID>",
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success");
         }
@@ -47,8 +48,9 @@ await tablesDB.DeleteRow(
 ## Parameters
 
 - **databaseId** *string* - Database ID. *(required)* 
-- **tableId** *string* - Table ID. You can create a new table using the Database service [server integration](https://appwrite.io/docs/server/tablesdb#tablesDBCreate). *(required)* 
+- **tableId** *string* - Table ID. You can create a new table using the Database service [server integration](https://appwrite.io/docs/references/cloud/server-dart/tablesDB#createTable). *(required)* 
 - **rowId** *string* - Row ID. *(required)* 
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 

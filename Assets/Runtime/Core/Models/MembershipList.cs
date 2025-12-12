@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -24,7 +25,7 @@ namespace Appwrite.Models
 
         public static MembershipList From(Dictionary<string, object> map) => new MembershipList(
             total: Convert.ToInt64(map["total"]),
-            memberships: ((IEnumerable<object>)map["memberships"]).Select(it => Membership.From(map: (Dictionary<string, object>)it)).ToList()
+            memberships: map["memberships"].ToEnumerable().Select(it => Membership.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

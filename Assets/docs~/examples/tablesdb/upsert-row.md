@@ -34,7 +34,8 @@ public class UpsertRowExample : MonoBehaviour
                 tableId: "<TABLE_ID>",
                 rowId: "<ROW_ID>",
                 data: [object], // optional
-                permissions: ["read("any")"] // optional
+                permissions: new List<string> { Permission.Read(Role.Any()) }, // optional
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -53,10 +54,11 @@ public class UpsertRowExample : MonoBehaviour
 - **rowId** *string* - Row ID. *(required)* 
 - **data** *object* - Row data as JSON object. Include all required columns of the row to be created or updated. *(optional)*
 - **permissions** *array* - An array of permissions strings. By default, the current permissions are inherited. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 
 Returns `Row` object.
 ## More Info
 
-Create or update a Row. Before using this route, you should create a new table resource using either a [server integration](https://appwrite.io/docs/server/tablesdb#tablesDBCreateTable) API or directly from your database console.
+Create or update a Row. Before using this route, you should create a new table resource using either a [server integration](https://appwrite.io/docs/references/cloud/server-dart/tablesDB#createTable) API or directly from your database console.

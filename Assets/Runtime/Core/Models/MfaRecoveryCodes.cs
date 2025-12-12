@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -18,7 +19,7 @@ namespace Appwrite.Models
         }
 
         public static MfaRecoveryCodes From(Dictionary<string, object> map) => new MfaRecoveryCodes(
-            recoveryCodes: ((IEnumerable<object>)map["recoveryCodes"]).Select(x => x.ToString()).ToList()
+            recoveryCodes: map["recoveryCodes"].ToEnumerable().Select(x => x.ToString()).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

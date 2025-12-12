@@ -31,7 +31,8 @@ public class ListExecutionsExample : MonoBehaviour
         {
             ExecutionList result = await functions.ListExecutions(
                 functionId: "<FUNCTION_ID>",
-                queries: new List<string>() // optional
+                queries: new List<string>(), // optional
+                total: false // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -47,6 +48,7 @@ public class ListExecutionsExample : MonoBehaviour
 
 - **functionId** *string* - Function ID. *(required)* 
 - **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. You may filter on the following attributes: trigger, status, responseStatusCode, duration, requestMethod, requestPath, deploymentId *(optional)*
+- **total** *boolean* - When set to false, the total count returned will be 0 and will not be calculated. *(optional)*
 
 ## Response
 

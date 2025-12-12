@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -58,7 +59,7 @@ namespace Appwrite.Models
             databaseId: map["$databaseId"].ToString(),
             createdAt: map["$createdAt"].ToString(),
             updatedAt: map["$updatedAt"].ToString(),
-            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x.ToString()).ToList(),
+            permissions: map["$permissions"].ToEnumerable().Select(x => x.ToString()).ToList(),
             data: map.TryGetValue("data", out var dataValue) ? (Dictionary<string, object>)dataValue : map
         );
 

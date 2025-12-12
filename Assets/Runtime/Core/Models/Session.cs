@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -184,7 +185,7 @@ namespace Appwrite.Models
             countryCode: map["countryCode"].ToString(),
             countryName: map["countryName"].ToString(),
             current: (bool)map["current"],
-            factors: ((IEnumerable<object>)map["factors"]).Select(x => x.ToString()).ToList(),
+            factors: map["factors"].ToEnumerable().Select(x => x.ToString()).ToList(),
             secret: map["secret"].ToString(),
             mfaUpdatedAt: map["mfaUpdatedAt"].ToString()
         );

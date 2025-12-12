@@ -32,7 +32,8 @@ public class DeleteDocumentExample : MonoBehaviour
 await databases.DeleteDocument(
                 databaseId: "<DATABASE_ID>",
                 collectionId: "<COLLECTION_ID>",
-                documentId: "<DOCUMENT_ID>"
+                documentId: "<DOCUMENT_ID>",
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success");
         }
@@ -49,6 +50,7 @@ await databases.DeleteDocument(
 - **databaseId** *string* - Database ID. *(required)* 
 - **collectionId** *string* - Collection ID. You can create a new collection using the Database service [server integration](https://appwrite.io/docs/server/databases#databasesCreateCollection). *(required)* 
 - **documentId** *string* - Document ID. *(required)* 
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 

@@ -30,7 +30,8 @@ public class ListLogsExample : MonoBehaviour
         try
         {
             LogList result = await account.ListLogs(
-                queries: new List<string>() // optional
+                queries: new List<string>(), // optional
+                total: false // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -45,6 +46,7 @@ public class ListLogsExample : MonoBehaviour
 ## Parameters
 
 - **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Only supported methods are limit and offset *(optional)*
+- **total** *boolean* - When set to false, the total count returned will be 0 and will not be calculated. *(optional)*
 
 ## Response
 

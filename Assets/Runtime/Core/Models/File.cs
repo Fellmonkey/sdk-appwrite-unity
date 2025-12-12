@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -72,7 +73,7 @@ namespace Appwrite.Models
             bucketId: map["bucketId"].ToString(),
             createdAt: map["$createdAt"].ToString(),
             updatedAt: map["$updatedAt"].ToString(),
-            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x.ToString()).ToList(),
+            permissions: map["$permissions"].ToEnumerable().Select(x => x.ToString()).ToList(),
             name: map["name"].ToString(),
             signature: map["signature"].ToString(),
             mimeType: map["mimeType"].ToString(),

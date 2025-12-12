@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Appwrite.Enums;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -107,17 +108,17 @@ namespace Appwrite.Models
             id: map["$id"].ToString(),
             createdAt: map["$createdAt"].ToString(),
             updatedAt: map["$updatedAt"].ToString(),
-            permissions: ((IEnumerable<object>)map["$permissions"]).Select(x => x.ToString()).ToList(),
+            permissions: map["$permissions"].ToEnumerable().Select(x => x.ToString()).ToList(),
             functionId: map["functionId"].ToString(),
             deploymentId: map["deploymentId"].ToString(),
             trigger: new ExecutionTrigger(map["trigger"].ToString()),
             status: new ExecutionStatus(map["status"].ToString()),
             requestMethod: map["requestMethod"].ToString(),
             requestPath: map["requestPath"].ToString(),
-            requestHeaders: ((IEnumerable<object>)map["requestHeaders"]).Select(it => Headers.From(map: (Dictionary<string, object>)it)).ToList(),
+            requestHeaders: map["requestHeaders"].ToEnumerable().Select(it => Headers.From(map: (Dictionary<string, object>)it)).ToList(),
             responseStatusCode: Convert.ToInt64(map["responseStatusCode"]),
             responseBody: map["responseBody"].ToString(),
-            responseHeaders: ((IEnumerable<object>)map["responseHeaders"]).Select(it => Headers.From(map: (Dictionary<string, object>)it)).ToList(),
+            responseHeaders: map["responseHeaders"].ToEnumerable().Select(it => Headers.From(map: (Dictionary<string, object>)it)).ToList(),
             logs: map["logs"].ToString(),
             errors: map["errors"].ToString(),
             duration: Convert.ToDouble(map["duration"]),

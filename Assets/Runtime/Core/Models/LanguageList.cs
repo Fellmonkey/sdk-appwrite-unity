@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -24,7 +25,7 @@ namespace Appwrite.Models
 
         public static LanguageList From(Dictionary<string, object> map) => new LanguageList(
             total: Convert.ToInt64(map["total"]),
-            languages: ((IEnumerable<object>)map["languages"]).Select(it => Language.From(map: (Dictionary<string, object>)it)).ToList()
+            languages: map["languages"].ToEnumerable().Select(it => Language.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

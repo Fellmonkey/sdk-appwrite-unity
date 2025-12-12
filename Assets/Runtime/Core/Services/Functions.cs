@@ -18,14 +18,15 @@ namespace Appwrite.Services
         /// query params to filter your results.
         /// </para>
         /// </summary>
-        public UniTask<Models.ExecutionList> ListExecutions(string functionId, List<string>? queries = null)
+        public UniTask<Models.ExecutionList> ListExecutions(string functionId, List<string>? queries = null, bool? total = null)
         {
             var apiPath = "/functions/{functionId}/executions"
                 .Replace("{functionId}", functionId);
 
             var apiParameters = new Dictionary<string, object?>()
             {
-                { "queries", queries }
+                { "queries", queries },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()

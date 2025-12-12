@@ -18,14 +18,15 @@ namespace Appwrite.Services
         /// use the parameters to filter your results.
         /// </para>
         /// </summary>
-        public UniTask<Models.TeamList> List(List<string>? queries = null, string? search = null)
+        public UniTask<Models.TeamList> List(List<string>? queries = null, string? search = null, bool? total = null)
         {
             var apiPath = "/teams";
 
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "queries", queries },
-                { "search", search }
+                { "search", search },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -177,7 +178,7 @@ namespace Appwrite.Services
         /// the response by toggling membership privacy in the Console.
         /// </para>
         /// </summary>
-        public UniTask<Models.MembershipList> ListMemberships(string teamId, List<string>? queries = null, string? search = null)
+        public UniTask<Models.MembershipList> ListMemberships(string teamId, List<string>? queries = null, string? search = null, bool? total = null)
         {
             var apiPath = "/teams/{teamId}/memberships"
                 .Replace("{teamId}", teamId);
@@ -185,7 +186,8 @@ namespace Appwrite.Services
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "queries", queries },
-                { "search", search }
+                { "search", search },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()

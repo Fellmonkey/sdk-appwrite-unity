@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -24,7 +25,7 @@ namespace Appwrite.Models
 
         public static CurrencyList From(Dictionary<string, object> map) => new CurrencyList(
             total: Convert.ToInt64(map["total"]),
-            currencies: ((IEnumerable<object>)map["currencies"]).Select(it => Currency.From(map: (Dictionary<string, object>)it)).ToList()
+            currencies: map["currencies"].ToEnumerable().Select(it => Currency.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

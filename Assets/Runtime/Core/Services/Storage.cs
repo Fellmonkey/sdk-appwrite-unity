@@ -18,7 +18,7 @@ namespace Appwrite.Services
         /// your results.
         /// </para>
         /// </summary>
-        public UniTask<Models.FileList> ListFiles(string bucketId, List<string>? queries = null, string? search = null)
+        public UniTask<Models.FileList> ListFiles(string bucketId, List<string>? queries = null, string? search = null, bool? total = null)
         {
             var apiPath = "/storage/buckets/{bucketId}/files"
                 .Replace("{bucketId}", bucketId);
@@ -26,7 +26,8 @@ namespace Appwrite.Services
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "queries", queries },
-                { "search", search }
+                { "search", search },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()

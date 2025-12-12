@@ -40,7 +40,8 @@ public class CreateDocumentExample : MonoBehaviour
         age = 30,
         isAdmin = false
     },
-                permissions: ["read("any")"] // optional
+                permissions: new List<string> { Permission.Read(Role.Any()) }, // optional
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -59,6 +60,7 @@ public class CreateDocumentExample : MonoBehaviour
 - **documentId** *string* - Document ID. Choose a custom ID or generate a random ID with `ID.unique()`. Valid chars are a-z, A-Z, 0-9, period, hyphen, and underscore. Can&#039;t start with a special char. Max length is 36 chars. *(required)* 
 - **data** *object* - Document data as JSON object. *(required)* 
 - **permissions** *array* - An array of permissions strings. By default, only the current user is granted all permissions. [Learn more about permissions](https://appwrite.io/docs/permissions). *(optional)*
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 

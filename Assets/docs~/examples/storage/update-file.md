@@ -33,7 +33,7 @@ public class UpdateFileExample : MonoBehaviour
                 bucketId: "<BUCKET_ID>",
                 fileId: "<FILE_ID>",
                 name: "<NAME>", // optional
-                permissions: ["read("any")"] // optional
+                permissions: new List<string> { Permission.Read(Role.Any()) } // optional
             );
             Debug.Log("Success: " + result);
         }

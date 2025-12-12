@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -24,7 +25,7 @@ namespace Appwrite.Models
 
         public static LocaleCodeList From(Dictionary<string, object> map) => new LocaleCodeList(
             total: Convert.ToInt64(map["total"]),
-            localeCodes: ((IEnumerable<object>)map["localeCodes"]).Select(it => LocaleCode.From(map: (Dictionary<string, object>)it)).ToList()
+            localeCodes: map["localeCodes"].ToEnumerable().Select(it => LocaleCode.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Appwrite.Extensions;
 
 namespace Appwrite.Models
 {
@@ -24,7 +25,7 @@ namespace Appwrite.Models
 
         public static ContinentList From(Dictionary<string, object> map) => new ContinentList(
             total: Convert.ToInt64(map["total"]),
-            continents: ((IEnumerable<object>)map["continents"]).Select(it => Continent.From(map: (Dictionary<string, object>)it)).ToList()
+            continents: map["continents"].ToEnumerable().Select(it => Continent.From(map: (Dictionary<string, object>)it)).ToList()
         );
 
         public Dictionary<string, object?> ToMap() => new Dictionary<string, object?>()

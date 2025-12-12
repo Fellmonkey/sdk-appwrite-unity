@@ -1,0 +1,57 @@
+# CreateEmailVerification
+
+## Example
+
+```csharp
+using Appwrite;
+using Appwrite.Models;
+using Appwrite.Services;
+using Cysharp.Threading.Tasks;
+using UnityEngine;
+
+public class CreateEmailVerificationExample : MonoBehaviour
+{
+    private Client client;
+    private Account account;
+
+    async void Start()
+    {
+        client = new Client()
+            .SetEndpoint("https://<REGION>.cloud.appwrite.io/v1") // Your API Endpoint
+            .SetProject("<YOUR_PROJECT_ID>"); // Your project ID
+
+        account = new Account(client);
+
+        await ExampleCreateEmailVerification();
+    }
+    
+    async UniTask ExampleCreateEmailVerification()
+    {
+        try
+        {
+            Token result = await account.CreateEmailVerification(
+                url: "https://example.com"
+            );
+            Debug.Log("Success: " + result);
+        }
+        catch (AppwriteException ex)
+        {
+            Debug.LogError($"Error: {ex.Message} (Code: {ex.Code})");
+        }
+    }
+}
+```
+
+## Parameters
+
+- **url** *string* - URL to redirect the user back to your app from the verification email. Only URLs from hostnames in your project platform list are allowed. This requirement helps to prevent an [open redirect](https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html) attack against your project API. *(required)* 
+
+## Response
+
+Returns `Token` object.
+## More Info
+
+Use this endpoint to send a verification message to your user email address to confirm they are the valid owners of that address. Both the **userId** and **secret** arguments will be passed as query parameters to the URL you have provided to be attached to the verification email. The provided URL should redirect the user back to your app and allow you to complete the verification process by verifying both the **userId** and **secret** parameters. Learn more about how to [complete the verification process](https://appwrite.io/docs/references/cloud/client-web/account#updateVerification). The verification link sent to the user&#039;s email address is valid for 7 days.
+
+Please note that in order to avoid a [Redirect Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md), the only valid redirect URLs are the ones from domains you have set when adding your platforms in the console interface.
+

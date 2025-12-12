@@ -32,7 +32,9 @@ public class ListRowsExample : MonoBehaviour
             RowList result = await tablesDB.ListRows(
                 databaseId: "<DATABASE_ID>",
                 tableId: "<TABLE_ID>",
-                queries: new List<string>() // optional
+                queries: new List<string>(), // optional
+                transactionId: "<TRANSACTION_ID>", // optional
+                total: false // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -47,8 +49,10 @@ public class ListRowsExample : MonoBehaviour
 ## Parameters
 
 - **databaseId** *string* - Database ID. *(required)* 
-- **tableId** *string* - Table ID. You can create a new table using the TableDB service [server integration](https://appwrite.io/docs/server/tablesdbdb#tablesdbCreate). *(required)* 
+- **tableId** *string* - Table ID. You can create a new table using the TablesDB service [server integration](https://appwrite.io/docs/products/databases/tables#create-table). *(required)* 
 - **queries** *array* - Array of query strings generated using the Query class provided by the SDK. [Learn more about queries](https://appwrite.io/docs/queries). Maximum of 100 queries are allowed, each 4096 characters long. *(optional)*
+- **transactionId** *string* - Transaction ID to read uncommitted changes within the transaction. *(optional)*
+- **total** *boolean* - When set to false, the total count returned will be 0 and will not be calculated. *(optional)*
 
 ## Response
 

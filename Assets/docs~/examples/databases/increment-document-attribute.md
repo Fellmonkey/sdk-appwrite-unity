@@ -35,7 +35,8 @@ public class IncrementDocumentAttributeExample : MonoBehaviour
                 documentId: "<DOCUMENT_ID>",
                 attribute: "",
                 value: 0, // optional
-                max: 0 // optional
+                max: 0, // optional
+                transactionId: "<TRANSACTION_ID>" // optional
             );
             Debug.Log("Success: " + result);
         }
@@ -55,6 +56,7 @@ public class IncrementDocumentAttributeExample : MonoBehaviour
 - **attribute** *string* - Attribute key. *(required)* 
 - **value** *number* - Value to increment the attribute by. The value must be a number. *(optional)*
 - **max** *number* - Maximum value for the attribute. If the current value is greater than this value, an error will be thrown. *(optional)*
+- **transactionId** *string* - Transaction ID for staging the operation. *(optional)*
 
 ## Response
 

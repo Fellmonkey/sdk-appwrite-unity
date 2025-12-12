@@ -33,7 +33,7 @@ public class CreateFileExample : MonoBehaviour
                 bucketId: "<BUCKET_ID>",
                 fileId: "<FILE_ID>",
                 file: InputFile.FromPath("./path-to-files/image.jpg"),
-                permissions: ["read("any")"] // optional
+                permissions: new List<string> { Permission.Read(Role.Any()) } // optional
             );
             Debug.Log("Success: " + result);
         }

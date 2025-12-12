@@ -14,12 +14,196 @@ namespace Appwrite.Services
         }
 
         /// <para>
+        /// List transactions across all databases.
+        /// </para>
+        /// </summary>
+        public UniTask<Models.TransactionList> ListTransactions(List<string>? queries = null)
+        {
+            var apiPath = "/databases/transactions";
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+                { "queries", queries }
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+            };
+
+
+            static Models.TransactionList Convert(Dictionary<string, object> it) =>
+                Models.TransactionList.From(map: it);
+
+            return _client.Call<Models.TransactionList>(
+                method: "GET",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
+        /// Create a new transaction.
+        /// </para>
+        /// </summary>
+        public UniTask<Models.Transaction> CreateTransaction(long? ttl = null)
+        {
+            var apiPath = "/databases/transactions";
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+                { "ttl", ttl }
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+                { "content-type", "application/json" }
+            };
+
+
+            static Models.Transaction Convert(Dictionary<string, object> it) =>
+                Models.Transaction.From(map: it);
+
+            return _client.Call<Models.Transaction>(
+                method: "POST",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
+        /// Get a transaction by its unique ID.
+        /// </para>
+        /// </summary>
+        public UniTask<Models.Transaction> GetTransaction(string transactionId)
+        {
+            var apiPath = "/databases/transactions/{transactionId}"
+                .Replace("{transactionId}", transactionId);
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+            };
+
+
+            static Models.Transaction Convert(Dictionary<string, object> it) =>
+                Models.Transaction.From(map: it);
+
+            return _client.Call<Models.Transaction>(
+                method: "GET",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
+        /// Update a transaction, to either commit or roll back its operations.
+        /// </para>
+        /// </summary>
+        public UniTask<Models.Transaction> UpdateTransaction(string transactionId, bool? commit = null, bool? rollback = null)
+        {
+            var apiPath = "/databases/transactions/{transactionId}"
+                .Replace("{transactionId}", transactionId);
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+                { "commit", commit },
+                { "rollback", rollback }
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+                { "content-type", "application/json" }
+            };
+
+
+            static Models.Transaction Convert(Dictionary<string, object> it) =>
+                Models.Transaction.From(map: it);
+
+            return _client.Call<Models.Transaction>(
+                method: "PATCH",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
+        /// Delete a transaction by its unique ID.
+        /// </para>
+        /// </summary>
+        public UniTask<object> DeleteTransaction(string transactionId)
+        {
+            var apiPath = "/databases/transactions/{transactionId}"
+                .Replace("{transactionId}", transactionId);
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+                { "content-type", "application/json" }
+            };
+
+
+
+            return _client.Call<object>(
+                method: "DELETE",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!);
+
+        }
+
+        /// <para>
+        /// Create multiple operations in a single transaction.
+        /// </para>
+        /// </summary>
+        public UniTask<Models.Transaction> CreateOperations(string transactionId, List<object>? operations = null)
+        {
+            var apiPath = "/databases/transactions/{transactionId}/operations"
+                .Replace("{transactionId}", transactionId);
+
+            var apiParameters = new Dictionary<string, object?>()
+            {
+                { "operations", operations }
+            };
+
+            var apiHeaders = new Dictionary<string, string>()
+            {
+                { "content-type", "application/json" }
+            };
+
+
+            static Models.Transaction Convert(Dictionary<string, object> it) =>
+                Models.Transaction.From(map: it);
+
+            return _client.Call<Models.Transaction>(
+                method: "POST",
+                path: apiPath,
+                headers: apiHeaders,
+                parameters: apiParameters.Where(it => it.Value != null).ToDictionary(it => it.Key, it => it.Value)!,
+                convert: Convert);
+
+        }
+
+        /// <para>
         /// Get a list of all the user's documents in a given collection. You can use
         /// the query params to filter your results.
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.listRows` instead.")]
-        public UniTask<Models.DocumentList> ListDocuments(string databaseId, string collectionId, List<string>? queries = null)
+        public UniTask<Models.DocumentList> ListDocuments(string databaseId, string collectionId, List<string>? queries = null, string? transactionId = null, bool? total = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents"
                 .Replace("{databaseId}", databaseId)
@@ -27,7 +211,9 @@ namespace Appwrite.Services
 
             var apiParameters = new Dictionary<string, object?>()
             {
-                { "queries", queries }
+                { "queries", queries },
+                { "transactionId", transactionId },
+                { "total", total }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -55,7 +241,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.createRow` instead.")]
-        public UniTask<Models.Document> CreateDocument(string databaseId, string collectionId, string documentId, object data, List<string>? permissions = null)
+        public UniTask<Models.Document> CreateDocument(string databaseId, string collectionId, string documentId, object data, List<string>? permissions = null, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents"
                 .Replace("{databaseId}", databaseId)
@@ -65,7 +251,8 @@ namespace Appwrite.Services
             {
                 { "documentId", documentId },
                 { "data", data },
-                { "permissions", permissions }
+                { "permissions", permissions },
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -92,7 +279,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.getRow` instead.")]
-        public UniTask<Models.Document> GetDocument(string databaseId, string collectionId, string documentId, List<string>? queries = null)
+        public UniTask<Models.Document> GetDocument(string databaseId, string collectionId, string documentId, List<string>? queries = null, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
                 .Replace("{databaseId}", databaseId)
@@ -101,7 +288,8 @@ namespace Appwrite.Services
 
             var apiParameters = new Dictionary<string, object?>()
             {
-                { "queries", queries }
+                { "queries", queries },
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -129,7 +317,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.upsertRow` instead.")]
-        public UniTask<Models.Document> UpsertDocument(string databaseId, string collectionId, string documentId, object data, List<string>? permissions = null)
+        public UniTask<Models.Document> UpsertDocument(string databaseId, string collectionId, string documentId, object data, List<string>? permissions = null, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
                 .Replace("{databaseId}", databaseId)
@@ -139,7 +327,8 @@ namespace Appwrite.Services
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "data", data },
-                { "permissions", permissions }
+                { "permissions", permissions },
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -166,7 +355,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.updateRow` instead.")]
-        public UniTask<Models.Document> UpdateDocument(string databaseId, string collectionId, string documentId, object? data = null, List<string>? permissions = null)
+        public UniTask<Models.Document> UpdateDocument(string databaseId, string collectionId, string documentId, object? data = null, List<string>? permissions = null, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
                 .Replace("{databaseId}", databaseId)
@@ -176,7 +365,8 @@ namespace Appwrite.Services
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "data", data },
-                { "permissions", permissions }
+                { "permissions", permissions },
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -202,7 +392,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.deleteRow` instead.")]
-        public UniTask<object> DeleteDocument(string databaseId, string collectionId, string documentId)
+        public UniTask<object> DeleteDocument(string databaseId, string collectionId, string documentId, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}"
                 .Replace("{databaseId}", databaseId)
@@ -211,6 +401,7 @@ namespace Appwrite.Services
 
             var apiParameters = new Dictionary<string, object?>()
             {
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -233,7 +424,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.decrementRowColumn` instead.")]
-        public UniTask<Models.Document> DecrementDocumentAttribute(string databaseId, string collectionId, string documentId, string attribute, double? xvalue = null, double? min = null)
+        public UniTask<Models.Document> DecrementDocumentAttribute(string databaseId, string collectionId, string documentId, string attribute, double? xvalue = null, double? min = null, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/decrement"
                 .Replace("{databaseId}", databaseId)
@@ -244,7 +435,8 @@ namespace Appwrite.Services
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "value", xvalue },
-                { "min", min }
+                { "min", min },
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
@@ -270,7 +462,7 @@ namespace Appwrite.Services
         /// </para>
         /// </summary>
         [Obsolete("This API has been deprecated since 1.8.0. Please use `TablesDB.incrementRowColumn` instead.")]
-        public UniTask<Models.Document> IncrementDocumentAttribute(string databaseId, string collectionId, string documentId, string attribute, double? xvalue = null, double? max = null)
+        public UniTask<Models.Document> IncrementDocumentAttribute(string databaseId, string collectionId, string documentId, string attribute, double? xvalue = null, double? max = null, string? transactionId = null)
         {
             var apiPath = "/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/increment"
                 .Replace("{databaseId}", databaseId)
@@ -281,7 +473,8 @@ namespace Appwrite.Services
             var apiParameters = new Dictionary<string, object?>()
             {
                 { "value", xvalue },
-                { "max", max }
+                { "max", max },
+                { "transactionId", transactionId }
             };
 
             var apiHeaders = new Dictionary<string, string>()
